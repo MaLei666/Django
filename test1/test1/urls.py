@@ -17,10 +17,13 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from test1.view import index
+from django.urls import include, path
 
 urlpatterns = [
     url(r'^admin', admin.site.urls),
     #在url中凡是以url开头的访问都使用index函数来处理该请求
     url(r'^index',index),
+    # path('app/', include('test_app.urls')),
+    url(r'^app/',include('test_app.urls'))
 ]
 
