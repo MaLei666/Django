@@ -6,6 +6,8 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    # 多个choice对应一个question
+    question = models.ForeignKey(Question, on_delete=models.CASCADE,verbose_name='question is')
     choice_text = models.CharField(max_length=200)
     votes = models.IntegerField(default=0)
+
