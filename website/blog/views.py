@@ -3,7 +3,8 @@ from django.shortcuts import render,get_object_or_404,redirect
 from . import models
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.db.models import Q
-
+from django_comments.models import Comment
+from django_comments import models as comment_models
 
 def make_paginator(objects, page, num=5):
     paginator = Paginator(objects, num)
@@ -132,10 +133,24 @@ def index(request):
 
     return render(request, 'blog/index.html', locals())
 
-
 def detail(request,blog_id):
     # entry = models.Entry.objects.get(id=blog_id)
     entry = get_object_or_404(models.Entry,id=blog_id)
+
+    comment_list = list()
+
+    def get_comment_list(comments):
+        for comment in comments:
+            comment_list.append(comment)
+            children = comment.child_comment.all()
+            if len(children) > 0:
+                get_comment_list(children)
+
+    top_comments = Comment.objects.filter(object_pk=blog_id, parent_comment=None,
+                                          content_type__app_label='blog').order_by('-submit_date')
+
+    get_comment_list(top_comments)
+    return render(request, 'blog/detail.html', locals())
 
 
 def catagory(request,category_id):
@@ -179,7 +194,70 @@ def archives(request, year, month):
     page_data = pagination_data(paginator, page)
     return render(request, 'blog/index.html', locals())
 
+def permission_denied(request):
+    '''403'''
+    return render(request, 'blog/403.html', locals())
 
 
+def page_not_found(request):
+    '''404'''
+    return render(request, 'blog/404.html', locals())
 
 
+def page_error(request):
+    '''500'''
+    return render(request, 'blog/500.html', locals())
+
+
+def reply(request, comment_id):
+    if not request.session.get('login', None) and not request.user.is_authenticated():
+        return redirect('/')
+    parent_comment = get_object_or_404(comment_models.Comment, id=comment_id)
+    return render(request, 'blog/reply.html', locals())
+
+
+def login(request):
+    import requests
+    import json
+    from django.conf import settings
+    code = request.GET.get('code', None)
+    if code is None:
+        return redirect('/')
+
+    access_token_url = 'https://api.weibo.com/oauth2/access_token?client_id=%s&client_secret=%s&grant_type=authorization_code&redirect_uri=http://127.0.0.1:8000/login&code=%s'\
+                        %(settings.CLIENT_ID, settings.APP_SECRET, code)
+
+    ret = requests.post(access_token_url)
+
+    data = ret.text    #微博返回的数据是json格式的
+
+    data_dict = json.loads(data)   #转换成python字典格式
+
+    token = data_dict['access_token']
+    uid = data_dict['uid']
+
+    request.session['token'] = token
+    request.session['uid'] = uid
+    request.session['login'] = True
+
+    user_info_url = 'https://api.weibo.com/2/users/show.json?access_token=%s&uid=%s' % (token, uid)
+    user_info = requests.get(user_info_url)
+
+    user_info_dict = json.loads(user_info.text)   #获取微博用户的信息
+
+    request.session['screen_name'] = user_info_dict['screen_name']
+    request.session['profile_image_url'] = user_info_dict['profile_image_url']
+
+    return redirect(request.GET.get('next', '/'))
+
+
+def logout(request):
+    if request.session['login']:
+        del request.session['login']
+        del request.session['uid']
+        del request.session['token']
+        del request.session['screen_name']
+        del request.session['profile_image_url']
+        return redirect(request.Get.get('next', '/'))
+    else:
+        return redirect('/')
