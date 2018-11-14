@@ -192,11 +192,11 @@
                                         <tbody>
 
                                         <tr style="background-color: #1c2b36;font-size: 14px; font-weight: bolder;color: white;">
-                                            <td colspan="8">表信息</td>
+                                            <td colspan="8">数据库信息</td>
                                         </tr>
 
                                         <tr class="gradeX odd" role="row">
-                                            <td class="font-bold text-center">表名</td>
+                                            <td class="font-bold text-center">库名</td>
 {#                                            <td class="font-bold text-center">用途</td>#}
                                             <td class="font-bold text-center">添加人</td>
                                             <td class="font-bold text-center">添加时间</td>
@@ -255,7 +255,7 @@
 
 
 {% block base_footer_html %}
-    <!-- 添加表 -->
+    <!-- 添加库 -->
     <div class="modal inmodal" id="AddDatabaseDBModal" tabindex="-1" role="dialog" aria-hidden="true"
          data-backdrop="static">
         <div class="modal-dialog" style="width: 380px;">
@@ -266,7 +266,7 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <i class="icon-close" style="font-size: 18px;"></i>
                     </button>
-                    <h4 class="modal-title">新建表</h4>
+                    <h4 class="modal-title">新建数据库</h4>
                 </div>
 
                 <form method="post" id="id_AddDataBaseDBForm">
@@ -278,10 +278,10 @@
                         <div class="form-group"
                              style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
                             <div class="col-md-3">
-                                <span style="font-size: 14px;">表名：</span>
+                                <span style="font-size: 14px;">库名：</span>
                             </div>
                             <div class="col-md-9" style="padding: 0;">
-                                <input type="text" class="form-control" placeholder="表名"
+                                <input type="text" class="form-control" placeholder="库名"
                                        maxlength="20" name="name" required="">
                             </div>
                         </div>
@@ -357,7 +357,7 @@
                         <div class="form-group"
                              style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
                             <div class="col-md-3">
-                                <span style="font-size: 14px;">授权表：</span>
+                                <span style="font-size: 14px;">授权库：</span>
                             </div>
                             <div class="col-md-9" style="padding: 0;">
                                 <select name="dbs" class="selectpicker form-control" multiple=""
@@ -441,7 +441,7 @@
                         <button type="button" class="close" data-dismiss="modal">
                             <i class="icon-close" style="font-size: 18px;"></i>
                         </button>
-                        <h4 class="modal-title">修改表</h4>
+                        <h4 class="modal-title">修改库</h4>
                     </div>
 
                     <form method="post" id="id_EditDataBaseDBForm{{ each_db_db_record.id }}">
@@ -453,10 +453,10 @@
                             <div class="form-group"
                                  style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
                                 <div class="col-md-3">
-                                    <span style="font-size: 14px;">表名：</span>
+                                    <span style="font-size: 14px;">库名：</span>
                                 </div>
                                 <div class="col-md-9" style="padding: 0;">
-                                    <input type="text" class="form-control" placeholder="表名"
+                                    <input type="text" class="form-control" placeholder="库名"
                                            maxlength="20" name="name" required="" value="{{ each_db_db_record.name }}">
                                 </div>
                             </div>

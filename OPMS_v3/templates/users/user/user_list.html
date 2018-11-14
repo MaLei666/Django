@@ -44,7 +44,7 @@
         <div class="app-content-body fade-in-up">
             <div class="padder" style="padding-top: 10px;">
 
-                <div class="col-md-11" style="padding-left: 0; padding-right: 0;width: 100%">
+                <div class="col-md-11" style="padding-left: 0; padding-right: 0;width: 100%;">
                     <div class="panel panel-default" id="body-content">
                         <div class="panel-heading" style="background-color: #1c2b36;">
                             <div style="display: block; border-left: 5px solid #fff; padding-left: 10px; font-size: 20px; font-weight: bolder; line-height: 25px;color: #fff;">
@@ -98,7 +98,7 @@
                                     <!-- 管理员以上才能看到停用的用户 -->
                                     {% if each_user.status == 2 %}
                                         {% if request.user.role > 1 %}
-                                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px;width: 33%">
+                                            <div class="col-sm-3" style="padding-left: 5px; padding-right: 5px;width: 33%;">
                                                 <div class="panel" style="margin-bottom: 30px;">
                                                     <div class="panel-heading"
                                                          style="background-color: #1c2b36; color: white;">

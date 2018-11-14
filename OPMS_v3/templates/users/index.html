@@ -24,8 +24,8 @@
 
                             <div class="row">
 
-                                <div class="col-md-9" style="padding-right: 5px;">
-                                    <div class="col-md-2" style="padding-left: 0; padding-right: 5px;">
+                                <div class="col-md-7" style="padding-right: 5px;">
+                                    <div class="col-md-3" style="padding-left: 0; padding-right: 5px;">
                                         <div class="panel panel-default" style="margin-bottom: 0;">
                                             <div class="text-center">
                                                 <div class="panel-body"
@@ -40,7 +40,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2" style="padding-left: 0; padding-right: 5px;">
+                                    <div class="col-md-3" style="padding-left: 0; padding-right: 5px;">
                                         <div class="panel panel-default" style="margin-bottom: 0;">
                                             <div class="text-center">
                                                 <div class="panel-body"
@@ -55,7 +55,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2" style="padding-left: 0; padding-right: 5px;">
+                                    <div class="col-md-3" style="padding-left: 0; padding-right: 5px;">
                                         <div class="panel panel-default" style="margin-bottom: 0;">
                                             <div class="text-center">
                                                 <div class="panel-body"
@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3" style="padding-left: 0;">
+                                <div class="col-md-3" style="padding-left: 0;width: 38%">
                                     <div class="panel panel-default">
 
                                         <div class="panel-heading pos-rlt text-center"
@@ -86,15 +86,15 @@
                                                 {% for each in op_records %}
                                                     <tr style="height: 30px;">
                                                         <td width="10%" class="text-right"
-                                                            style="padding-right: 15px; border-right: 2px solid
+                                                            style="padding-right: 10px; border-right: 2px solid
                                                                     {% ifequal each.operation 1 %} #00bc12 {% endifequal %}
                                                                     {% ifequal each.operation 2 %} #177cb0 {% endifequal %}
                                                                     {% ifequal each.operation 3 %} #fff143 {% endifequal %}
                                                                     {% ifequal each.operation 4 %} #ff2d51 {% endifequal %}
                                                                     {% ifequal each.operation 5 %} #1c2b36 {% endifequal %}
                                                                     {% ifequal each.operation 6 %} #FF00CC {% endifequal %}">{{ each.add_time|date:"m-d H:i" }}</td>
-                                                        <td width="100%"
-                                                            style="padding-left: 15px;"><a
+                                                        <td width="40%"
+                                                            style="padding-left: 10px;"><a
                                                                 href="{% url 'users:other_user_info' each.op_user.id %}"
                                                                 style="color:#006699 ;">{{ each.op_user.chinese_name }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ each.action }}
                                                         </td>
