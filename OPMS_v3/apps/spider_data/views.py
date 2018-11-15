@@ -8,51 +8,62 @@ from django.db.models import Q
 from django.urls import reverse
 
 ######################################
-# 第三方模块
-######################################
-from pure_pagination import PageNotAnInteger, Paginator, EmptyPage
-
-######################################
 # 系统模块
 ######################################
 import json
 import datetime
-
-######################################
-# 自建模块
-######################################
-from utils.login_check import LoginStatusCheck
 from .forms import *
 from .models import *
+from pure_pagination import PageNotAnInteger, Paginator, EmptyPage
 
 
 ######################################
-# 添加平台用户列表
+# 主机列表
 ######################################
-class EditPlatformUserView(LoginStatusCheck, View):
-    def post(self, request):
+class DataView(View):
+    def get(self, request):
+        # 页面选择
+        web_chose_left_1 = 'spider_data'
+        web_chose_left_2 = 'data'
+        web_chose_middle = ''
+
+        # 获取主机记录
+        data_records = DataInfo.objects.order_by('-update_time')
+
+        # 关键字
+        # keyword = request.GET.get('keyword', '')
+
+        # if keyword != '':
+        #     host_records = data_records.filter(Q(hot__icontains=keyword) | Q(
+        #         use__name__icontains=keyword) | Q(project__name__icontains=keyword) | Q(desc__icontains=keyword))
+
+        # 记录数量
+        record_nums = data_records.count()
+
+        # 判断页码
         try:
-            pu_id = request.POST.get('pu_id', '')
-            if pu_id != '':
-                pu = PlatformUserInfo.objects.get(id=int(pu_id))
-                pu.username = request.POST.get('username', '')
-                pu.password = request.POST.get('password', '')
-                pu.update_user = request.user
-                pu.save()
-            else:
-                platform_id = int(request.POST.get('platform_id'))
-                pu = PlatformUserInfo()
-                pu.platform_id = platform_id
-                pu.username = request.POST.get('username', '')
-                pu.password = request.POST.get('password', '')
-                pu.user = request.user
-                pu.update_user = request.user
-                pu.save()
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
 
-            return HttpResponse('{"status":"success", "msg":"修改用户成功！"}', content_type='application/json')
-        except Exception as e:
-            return HttpResponse('{"status":"failed", "msg":"修改用户失败！"}', content_type='application/json')
+        # 对取到的数据进行分页，记得定义每页的数量
+        p = Paginator(data_records, 16, request=request)
 
+        # 分页处理后的 QuerySet
+        data_records = p.page(page)
+
+        context = {
+            'web_chose_left_1': web_chose_left_1,
+            'web_chose_left_2': web_chose_left_2,
+            'web_chose_middle': web_chose_middle,
+            # 'users': users,
+            # 'keyword': keyword,
+            'data_records': data_records,
+            'record_nums': record_nums,
+            # 'WEBSSH_IP': WEBSSH_IP,
+            # 'WEBSSH_PORT': WEBSSH_PORT,
+        }
+        return render(request, 'spider_data/db_data.html', context=context)
 
 
 

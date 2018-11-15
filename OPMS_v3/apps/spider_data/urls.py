@@ -9,7 +9,7 @@ app_name = 'spider_data'
 
 urlpatterns = [
     # 首页
-    path('', EditPlatformUserView.as_view(), name='data'),
+    path('', DataView.as_view(), name='data'),
 
 ]
 

@@ -63,6 +63,8 @@ INSTALLED_APPS = [
     'operation_record',
     # 线上管理
     # 'online_management',
+    # 爬虫数据
+    'spider_data',
 ]
 
 

@@ -41,6 +41,8 @@ urlpatterns = [
 
     # online
     # path('online/', include('online_management.urls')),
+    path('spider/', include('spider_data.urls')),
+
 ]
 
 

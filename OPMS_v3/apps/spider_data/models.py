@@ -1,17 +1,20 @@
 from django.db import models
 from users.models import UserProfile
 
-class PlatformInfo(models.Model):
-    name = models.CharField(verbose_name='平台名称', max_length=30)
-    logo = models.CharField(verbose_name='logo', max_length=100, blank=True, null=True)
-    url = models.CharField(verbose_name='url', max_length=200)
-    belong = models.PositiveSmallIntegerField(verbose_name='隶属', choices=((1, '公司平台'), (2, '运维平台'), (3, '其它平台')))
-    is_public = models.BooleanField(verbose_name='公开', default=True)
-    add_user = models.ForeignKey(UserProfile, verbose_name='添加人', related_name='pl_user', on_delete=models.CASCADE, default=1)
+class DataInfo(models.Model):
+
+    question=models.CharField(verbose_name='问题标题', max_length=30)
+    hot=models.CharField(verbose_name='问题热度', max_length=30)
+    answer_count=models.IntegerField(verbose_name='回答数', max_length=30)
+    text=models.CharField(verbose_name='回答内容', max_length=30)
+    author=models.CharField(verbose_name='回答作者', max_length=30)
+    voteup_count=models.IntegerField(verbose_name='赞同数量', max_length=30)
+    comment_count=models.IntegerField(verbose_name='评论数量', max_length=30)
+    update_time=models.DateTimeField(verbose_name='更新时间', max_length=30)
 
     class Meta:
-        verbose_name = '平台表'
+        verbose_name = '知乎问题表'
         verbose_name_plural = verbose_name
 
     def __str__(self):
-        return self.name
+        return self.question
