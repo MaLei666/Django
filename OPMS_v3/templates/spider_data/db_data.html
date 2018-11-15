@@ -101,22 +101,21 @@
                                                     <td class="text-center"
                                                         style="vertical-align:middle;">{{ forloop.counter }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_data_record. }}</td>
+                                                        style="vertical-align:middle;">{{ each_data_record.question }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;"></td>
+                                                        style="vertical-align:middle;">{{ each_data_record.hot }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_data_record.host.system.name }} {{ each_db_record.host.system.version }}
-                                                        ( {{ each_db_record.host.system.get_bit_display }} )
-                                                    </td>
+                                                        style="vertical-align:middle;">{{ each_data_record.answer_count }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_data_record.host.op_env.name }}</td>
+                                                        style="vertical-align:middle;">{{ each_data_record.text }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_data_record.host.idc.name }}</td>
+                                                        style="vertical-align:middle;">{{ each_data_record.author }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_data_record.db_name }}
-                                                        - {{ each_db_record.db_version }}</td>
+                                                        style="vertical-align:middle;">{{ each_data_record.voteup_count }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_data_record.add_time }}</td>
+                                                        style="vertical-align:middle;">{{ each_data_record.comment_count }}</td>
+                                                    <td class="text-center"
+                                                        style="vertical-align:middle;">{{ each_data_record.update_time }}</td>
 
                                                 </tr>
                                             {% endfor %}
