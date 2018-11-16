@@ -254,7 +254,7 @@
                                 <!-- 二级菜单 -->
                                 <ul class="nav nav-sub dk" style="font-size: 12px;">
                                     <li {% ifequal web_chose_left_2 'spider_data' %}class="active"{% endifequal %}>
-                                        <a href="{% url 'spider_data:data' %}">
+                                        <a href="{% url 'spider_data:list' %}">
                                             <span>爬虫数据</span>
                                         </a>
                                     </li>
@@ -367,7 +367,7 @@
 
         <!-- =============================================================================== -->
         <!-- 页面底部开始 -->
-        <div class="app-footer wrapper b-t bg-light">
+        <div class="app-footer wrapper b-t bg-light" style="height: 3%">
             <span class="pull-right">v 1</span>
             <a href="https://github.com/PythonTra1nee/OPMS_v3" target="_blank">© 2018 Copyright 运维管理 | More info</a>
         </div>

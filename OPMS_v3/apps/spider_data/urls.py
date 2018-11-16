@@ -8,8 +8,10 @@ from .views import *
 app_name = 'spider_data'
 
 urlpatterns = [
-    # 首页
-    path('', DataView.as_view(), name='data'),
+    # 问题列表页
+    path('', DataView.as_view(), name='list'),
+    path('info/<int:question_id>', InfoView.as_view(), name='info'),
+    # path('info', InfoView.as_view(), name='info'),
 
 ]
 
