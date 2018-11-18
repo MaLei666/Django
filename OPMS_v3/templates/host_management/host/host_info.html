@@ -122,8 +122,8 @@
                                             <td class="text-center">{{ records.admin_user }}</td>
                                             <td class="font-bold text-center">管理员密码</td>
                                             <td class="text-center">{{ records.admin_pass }}</td>
-{#                                                {% if request.user.role < 2 %}#}
-{#                                                    无权限{% else %}{{ records.admin_pass }}{% endif %}#}
+                                                {% if request.user.role < 2 %}
+                                                    无权限{% else %}{{ records.admin_pass }}{% endif %}
                                             <td class="font-bold text-center">备注</td>
                                             <td colspan="7" class="text-center">{{ records.desc }}</td>
                                         </tr>

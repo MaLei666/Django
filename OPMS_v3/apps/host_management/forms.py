@@ -37,7 +37,7 @@ class EditHostInfoForm(forms.Form):
     # disk = forms.IntegerField(required=True)
     # memory = forms.IntegerField(required=True)
     # network = forms.IntegerField(required=True)
-    # ssh_port = forms.IntegerField(required=True)
+    ssh_port = forms.IntegerField(required=True)
     admin_user = forms.CharField(min_length=2, max_length=20, required=True)
     admin_pass = forms.CharField(min_length=6, max_length=50, required=True)
     # normal_user = forms.CharField(min_length=2, max_length=20, required=False)

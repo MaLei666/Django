@@ -101,12 +101,8 @@ class WebSSHView(LoginStatusCheck, View):
 
             port = host.ssh_port
 
-            if host.normal_user:
-                username = host.normal_user
-                password = host.normal_pass
-            else:
-                username = host.admin_user
-                password = host.admin_pass
+            username = host.admin_user
+            password = host.admin_pass
 
             ret = {"ip": ip, 'port': port, "username": username, 'password': password, "static": True}
         except Exception as e:

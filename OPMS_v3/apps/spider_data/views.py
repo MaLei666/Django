@@ -73,7 +73,7 @@ class  InfoView(View):
         web_chose_middle = ''
 
         # 获取问题详情
-        info_records = DataInfo.objects.get(id=question_id).order_by('-update_time')
+        info_records = DataInfo.objects.order_by('-voteup_count').filter(question_id=question_id)
 
         # 关键字
         # keyword = request.GET.get('keyword', '')
