@@ -253,9 +253,17 @@
 
                                 <!-- 二级菜单 -->
                                 <ul class="nav nav-sub dk" style="font-size: 12px;">
-                                    <li {% ifequal web_chose_left_2 'spider_data' %}class="active"{% endifequal %}>
-                                        <a href="{% url 'spider_data:list' %}">
-                                            <span>爬虫数据</span>
+                                    <li {% ifequal web_chose_left_2 'zhihu' %}class="active"{% endifequal %}>
+                                        <a href="{% url 'spider_data:zhihu_list' %}">
+                                            <span>知乎爬虫</span>
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="nav nav-sub dk" style="font-size: 12px;">
+                                    <li {% ifequal web_chose_left_2 'dianping' %}class="active"{% endifequal %}>
+                                        <a href="{% url 'spider_data:dp_list' %}">
+                                            <span>大众点评</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -341,11 +349,6 @@
                                     </li>
                                 </ul>
                             </li>
-
-
-
-
-
 
                         </ul>
                     </nav>

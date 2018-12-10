@@ -72,7 +72,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-3" style="padding-left: 0;width: 38%">
+                                <div class="col-md-3" style="padding-right: 0;width: 30%;margin-left: 80px">
                                     <div class="panel panel-default">
 
                                         <div class="panel-heading pos-rlt text-center"
@@ -85,15 +85,15 @@
                                                 {% Cet_Latest_Record as op_records %}
                                                 {% for each in op_records %}
                                                     <tr style="height: 30px;">
-                                                        <td width="10%" class="text-right"
-                                                            style="padding-right: 10px; border-right: 2px solid
+                                                        <td width="15%" class="text-left"
+                                                            style="border-right: 2px solid
                                                                     {% ifequal each.operation 1 %} #00bc12 {% endifequal %}
                                                                     {% ifequal each.operation 2 %} #177cb0 {% endifequal %}
                                                                     {% ifequal each.operation 3 %} #fff143 {% endifequal %}
                                                                     {% ifequal each.operation 4 %} #ff2d51 {% endifequal %}
                                                                     {% ifequal each.operation 5 %} #1c2b36 {% endifequal %}
                                                                     {% ifequal each.operation 6 %} #FF00CC {% endifequal %}">{{ each.add_time|date:"m-d H:i" }}</td>
-                                                        <td width="40%"
+                                                        <td width="45%"
                                                             style="padding-left: 10px;"><a
                                                                 href="{% url 'users:other_user_info' each.op_user.id %}"
                                                                 style="color:#006699 ;">{{ each.op_user.chinese_name }}</a>&nbsp;&nbsp;&nbsp;&nbsp;{{ each.action }}

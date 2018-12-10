@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import DataInfo,DataList
+from .models import ZhihuInfo,ZhihuList,FoodRank
 # Register your models here.
-admin.site.register(DataInfo)
-admin.site.register(DataList)
+admin.site.register(ZhihuInfo)
+admin.site.register(ZhihuList)
+admin.site.register(FoodRank)
