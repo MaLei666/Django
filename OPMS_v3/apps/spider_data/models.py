@@ -1,12 +1,11 @@
 from django.db import models
-from users.models import UserProfile
 
 class FoodRank(models.Model):
     # id = models.AutoField(primary_key= True)
     tip=models.CharField(verbose_name='排行类型', max_length=100)
     tip_id=models.IntegerField(verbose_name='排行类型id')
     classifi=models.CharField(verbose_name='店铺类型', max_length=100)
-    rank=models.IntegerField(verbose_name='排名')
+    rank_num=models.IntegerField(verbose_name='排名')
     shopId=models.CharField(verbose_name='店铺id', max_length=100)
     shopName=models.CharField(verbose_name='店铺名', max_length=100)
     mainRegionName=models.CharField(verbose_name='所在区域', max_length=100, blank=True, null=True)

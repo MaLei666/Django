@@ -86,17 +86,19 @@
                                             <!-- 标题行 -->
                                             <thead>
                                             <tr role="row">
-                                                <th class="text-center" width="20">ID</th>
-                                                <th class="text-center" width="200">店铺名称</th>
-                                                <th class="text-center" width="100">店铺类型</th>
-                                                <th class="text-center" width="60">排行</th>
-                                                <th class="text-center" width="120">所在区域</th>
-                                                <th class="text-center" width="60">口味</th>
-                                                <th class="text-center" width="60">环境</th>
-                                                <th class="text-center" width="60">服务</th>
-                                                <th class="text-center" width="90">平均消费</th>
-                                                <th class="text-center" width="260">地址</th>
-                                                <th class="text-center" width="120">更新时间</th>
+                                                <th class="text-center">ID</th>
+                                                <th class="text-center">店铺名称</th>
+                                                <th class="text-center">店铺类型</th>
+                                                <th class="text-center">排行</th>
+                                                <th class="text-center">口味</th>
+                                                <th class="text-center">环境</th>
+                                                <th class="text-center">服务</th>
+                                                <th class="text-center">平均消费</th>
+                                                <th class="text-center">所在区域</th>
+                                                <th class="text-center">地址</th>
+                                                <th class="text-center">更新时间</th>
+                                                <th class="text-center" >评论</th>
+
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -110,9 +112,7 @@
                                                         <td class="text-center"
                                                             style="vertical-align:middle;">{{ each_info_record.classifi }}</td>
                                                         <td class="text-center"
-                                                            style="vertical-align:middle;">{{ each_info_record.rank }}</td>
-                                                        <td class="text-center"
-                                                            style="vertical-align:middle;">{{ each_info_record.mainRegionName }}</td>
+                                                            style="vertical-align:middle;">{{ each_info_record.rank_num }}</td>
                                                         <td class="text-center"
                                                             style="vertical-align:middle;">{{ each_info_record.taste }}</td>
                                                         <td class="text-center"
@@ -122,9 +122,18 @@
                                                         <td class="text-center"
                                                             style="vertical-align:middle;">{{ each_info_record.avgPrice }}</td>
                                                         <td class="text-center"
+                                                            style="vertical-align:middle;">{{ each_info_record.mainRegionName }}</td>
+                                                        <td class="text-center"
                                                             style="vertical-align:middle;">{{ each_info_record.address }}</td>
                                                         <td class="text-center"
                                                             style="vertical-align:middle;">{{ each_info_record.update_time }}</td>
+                                                        <td class="text-center" style="vertical-align:middle;">
+                                                            <a class="btn btn-xs"
+{#                                                               href="{% url 'spider_data:dp_info' each_data_record.tip_id %}"#}
+                                                               style="background-color: slategrey;color: white;">
+                                                                详情
+                                                            </a>
+                                                        </td>
 
                                                     </tr>
                                                 {% endfor %}
