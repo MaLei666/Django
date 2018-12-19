@@ -196,7 +196,49 @@ class DP_S_View(View):
         }
         return render(request, 'spider_data/dp_shop_info.html', context=context)
 
+######################################
+# 大众点评店铺评论列表
+######################################
+class DP_RE_View(View):
+    def get(self, request,shopId):
+        # 页面选择
+        web_chose_left_1 = 'spider_data'
+        web_chose_left_2 = 'dp_re_info'
+        web_chose_middle = ''
 
+        # 获取评论信息
+        re_infos = ShopInfo.objects.filter(shopId=shopId)
+
+        # 关键字
+        # keyword = request.GET.get('keyword', '')
+
+        # if keyword != '':
+        #     host_records = data_records.filter(Q(hot__icontains=keyword) | Q(
+        #         use__name__icontains=keyword) | Q(project__name__icontains=keyword) | Q(desc__icontains=keyword))
+
+        # 记录数量
+        record_nums = re_infos.count()
+
+        # 判断页码
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # 对取到的数据进行分页，记得定义每页的数量
+        p = Paginator(re_infos, 20, request=request)
+
+        # 分页处理后的 QuerySet
+        re_infos = p.page(page)
+
+        context = {
+            'web_chose_left_1': web_chose_left_1,
+            'web_chose_left_2': web_chose_left_2,
+            'web_chose_middle': web_chose_middle,
+            're_infos': re_infos,
+            'record_nums': record_nums,
+        }
+        return render(request, 'spider_data/dp_re_info.html', context=context)
 
 
 

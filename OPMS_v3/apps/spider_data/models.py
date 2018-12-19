@@ -24,6 +24,23 @@ class FoodRank(models.Model):
     def __str__(self):
         return self.tip_id
 
+class ShopInfo(models.Model):
+    shopId=models.CharField(verbose_name='店铺id', max_length=100)
+    shopName=models.CharField(verbose_name='店铺名称', max_length=100)
+    review=models.CharField(verbose_name='评论', max_length=3000, blank=True, null=True)
+    review_recommend=models.CharField(verbose_name='推荐菜', max_length=300, blank=True, null=True)
+    review_time=models.DateTimeField(verbose_name='评论时间',max_length=300, blank=True, null=True)
+    update_time=models.DateTimeField(verbose_name='更新时间',max_length=300, blank=True, null=True)
+    now_page=models.IntegerField(verbose_name='页码')
+    re_no=models.IntegerField(verbose_name='索引')
+
+    class Meta:
+        verbose_name = '大众点评店铺评论列表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.shopId
+
 
 class ZhihuList(models.Model):
     # id = models.AutoField(primary_key= True)
