@@ -217,6 +217,68 @@
                                 </a>
                             </li>
 
+                            <li {% ifequal web_chose_left_1 'platform' %}class="active"{% endifequal %}>
+                                <a>
+                                    <i class="pull-right fa fa-angle-right" style="width: 5px;font-weight: bolder;"
+                                       id="coll_tag_plat"></i>
+                                    <i class="fa fa-desktop"></i>
+                                    <span style="font-size: 13px; ">账户管理</span>
+                                </a>
+
+                                <!-- 二级菜单 -->
+                                <ul class="nav nav-sub dk" style="font-size: 12px;">
+                                    <li {% ifequal web_chose_left_2 'company' %}class="active"{% endifequal %}>
+                                        <a href="{% url 'platform_management:platform_company_list' %}">
+                                            <span>内部平台</span>
+                                        </a>
+                                    </li>
+
+                                    <li {% ifequal web_chose_left_2 'ops' %}class="active"{% endifequal %}>
+                                        <a href="{% url 'platform_management:platform_ops_list' %}">
+                                            <span>运维平台</span>
+                                        </a>
+                                    </li>
+
+                                    <li {% ifequal web_chose_left_2 'other' %}class="active"{% endifequal %}>
+                                        <a href="{% url 'platform_management:platform_other_list' %}">
+                                            <span>其它平台</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            {% if request.user.role > 1 %}
+                                    <li {% ifequal web_chose_left_1 'basic_setting' %}class="active"{% endifequal %}>
+                                        <a>
+                                            <i class="pull-right fa fa-angle-right"
+                                               style="width: 5px;font-weight: bolder;" id="coll_tag_ops"></i>
+                                            <i class="glyphicon glyphicon-cog"></i>
+                                            <span style="font-size: 13px; ">全局配置</span>
+                                        </a>
+
+                                        <!-- 二级菜单 -->
+                                        <ul class="nav nav-sub dk" style="font-size: 12px;">
+                                            <li {% ifequal web_chose_left_2 'os' %}class="active"{% endifequal %}>
+                                                <a href="{% url 'host_management:os_List' %}">
+                                                    <span>系统配置</span>
+                                                </a>
+                                            </li>
+
+                                            <li {% ifequal web_chose_left_2 'project' %}class="active"{% endifequal %}>
+                                                <a href="{% url 'host_management:project_List' %}">
+                                                    <span>项目配置</span>
+                                                </a>
+                                            </li>
+
+                                            <li {% ifequal web_chose_left_2 'use' %}class="active"{% endifequal %}>
+                                                <a href="{% url 'host_management:use_List' %}">
+                                                    <span>用途配置</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                {% endif %}
+
                             <!-- 主机管理 -->
                             <li {% ifequal web_chose_left_1 'host_management' %}class="active"{% endifequal %}>
                                 <a>
@@ -268,6 +330,39 @@
                                     </li>
                                 </ul>
                             </li>
+
+                            {% if request.user.role > 1 %}
+                                <!-- 主机管理 -->
+                                <li {% ifequal web_chose_left_1 'port_domain' %}class="active"{% endifequal %}>
+                                    <a>
+                                        <i class="pull-right fa fa-angle-right"
+                                           style="width: 5px;font-weight: bolder;" id="coll_tag_ops"></i>
+                                        <i class="glyphicon glyphicon-globe"></i>
+                                        <span style="font-size: 13px; ">端口域名</span>
+                                    </a>
+
+                                    <!-- 二级菜单 -->
+                                    <ul class="nav nav-sub dk" style="font-size: 12px;">
+                                        <li {% ifequal web_chose_left_2 'port_port' %}class="active"{% endifequal %}>
+                                            <a href="{% url 'host_management:port_port_list' %}">
+                                                <span>端口映射</span>
+                                            </a>
+                                        </li>
+
+                                        <li {% ifequal web_chose_left_2 'domain_name' %}class="active"{% endifequal %}>
+                                            <a href="{% url 'host_management:domain_name_list' %}">
+                                                <span>域名管理</span>
+                                            </a>
+                                        </li>
+
+                                        <li {% ifequal web_chose_left_2 'domain_resolve' %}class="active"{% endifequal %}>
+                                            <a href="{% url 'host_management:domain_resolve_list' %}">
+                                                <span>域名解析</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
 
                             <!-- 二级菜单 -->
                             <li {% ifequal web_chose_left_1 'document_management' %}class="active"{% endifequal %}>

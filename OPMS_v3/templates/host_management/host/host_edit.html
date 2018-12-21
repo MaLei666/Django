@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-- 修改某台主机 -->
+    <div class="modal inmodal" id="EditHostModal" tabindex="-1" role="dialog" aria-hidden="true"
+         data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content" style="margin-top: 100px;">
+
+                <div class="modal-header"
+                     style="background-color: #1c2b36; color: white;padding-top: 10px; padding-bottom: 10px;">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <i class="icon-close" style="font-size: 18px;"></i>
+                    </button>
+                    <h4 class="modal-title">修改主机</h4>
+                </div>
+
+                <form method="post" id="id_EditHostForm">
+                    <input type="hidden" name="host_id" value="{{ each_host_record.id }}">
+                    <div class="modal-body" style="height: 550px;">
+                        <div class="col-md-12">
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">内网 IP：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <input type="text" class="form-control" placeholder="内网 IP"
+                                           maxlength="20" name="in_ip" required="" value="{{ each_host_record.in_ip }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">外网 IP：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <input type="text" class="form-control" placeholder="外网 IP（没有可以不填）"
+                                           maxlength="20" name="out_ip" required=""
+                                           value="{% if each_host_record.out_ip %}{{ each_host_record.out_ip }}{% endif %}">
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">主机名：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <input type="text" class="form-control" placeholder="主机名"
+                                           maxlength="20" name="hostname" required="" value="{{ each_host_record.hostname }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">操作系统：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <select name="system" class="selectpicker form-control" style="display: none;">
+                                        {% for each_system in systems %}
+                                            <option value="{{ each_system.id }}"
+                                                    {% ifequal each_host_record.system.id each_system.id %}
+                                                    selected {% endifequal %}>{{ each_system.name }} {{ each_system.version }}
+                                                ( {{ each_system.get_bit_display }} )
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">远程端口：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <input type="text" class="form-control" placeholder="远程端口"
+                                           maxlength="20" name="ssh_port" required="" value="{{ each_host_record.ssh_port }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">root远程：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <select name="root_ssh" class="selectpicker form-control" style="display: none;">
+                                        <option value="True" {% if each_host_record.root_ssh %} selected {% endif %}>是</option>
+                                        <option value="False" {% if not each_host_record.root_ssh %} selected {% endif %}>否
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">用途：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <select name="use" class="selectpicker form-control" style="display: none;">
+                                        {% for each_use in uses %}
+                                            <option value="{{ each_use.id }}" {% ifequal each_host_record.use.id each_use.id %}
+                                                    selected {% endifequal %}>{{ each_use.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">项目：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <select name="project" class="selectpicker form-control" style="display: none;">
+                                        {% for each_project in projects %}
+                                            <option value="{{ each_project.id }}"
+                                                    {% ifequal each_host_record.project.id each_project.id %}
+                                                    selected {% endifequal %}>{{ each_project.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                        <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">账户：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <input type="text" class="form-control" placeholder="管理员账户"
+                                           maxlength="20" name="admin_user" required=""
+                                           value="{{ each_host_record.admin_user }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">密码：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <input type="text" class="form-control" placeholder="管理员密码"
+                                           maxlength="50" name="admin_pass" required=""
+                                           value="{{ each_host_record.admin_pass }}">
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">负责人：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <select name="op_user" class="selectpicker form-control" style="display: none;">
+                                        {% for each_user in users %}
+                                            <option value="{{ each_user.id }}"
+                                                    {% ifequal each_host_record.op_user.id each_user.id %}
+                                                    selected {% endifequal %}>{{ each_user.chinese_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group"
+                                 style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                                <div class="col-md-3">
+                                    <span style="font-size: 14px;">备注：</span>
+                                </div>
+                                <div class="col-md-9" style="padding: 0;">
+                                    <input type="text" class="form-control" placeholder="备注（没有可以不填）"
+                                           maxlength="200" name="desc" required="" value="{{ each_host_record.desc }}" }>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="padding-right: 30px;padding-top: 10px; padding-bottom: 10px;">
+                        <a class="btn btn-sm btn-default" data-dismiss="modal">取消</a>
+                        <a class="btn btn-sm btn-default" id="id_EditHostBtn">修改</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+            <!-- 删除某台主机 -->
+        <div class="modal inmodal" id="StopHostModal" tabindex="-1" role="dialog" aria-hidden="true"
+             data-backdrop="static">
+            <div class="modal-dialog modal-sm" style="padding-top: 10%;">
+                <div class="modal-content">
+
+                    <div class="modal-header"
+                         style="background-color: #1c2b36; color: white;padding-top: 10px; padding-bottom: 10px;">
+                        <button type="button" class="close" data-dismiss="modal">
+                            <i class="icon-close" style="font-size: 18px;"></i>
+                        </button>
+                        <h4 class="modal-title">警告！</h4>
+                    </div>
+
+                    <form method="post" id="id_DeleteHostForm">
+                        <input type="hidden" name="host_id" value="{{ each_host_record.id }}">
+                        <div class="modal-body">
+                            <span style="font-size: 16px;color: black;">是否确定删除该主机？</span>
+                        </div>
+                    </form>
+
+                    <div class="modal-footer" style="padding: 10px;">
+                        <a class="btn btn-default" data-dismiss="modal" style="padding: 2px 10px;">取消</a>
+                        <a class="btn btn-default" id="id_DeleteHostBtn" style="padding: 2px 10px;">确定</a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    <!-- 修改主机 -->
+        <script>
+            $(function () {
+                // 提交表单
+                $('#id_EditHostBtn').on('click', function () {
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        url: "{% url 'host_management:edit_host' %}",
+                        data: $('#id_EditHostForm').serialize(),
+                        async: true,
+                        beforeSend: function (xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                        },
+                        success: function (data) {
+                            if (data.status == 'success') {
+                                window.location.href = "{% url 'host_management:host_list' %}";
+
+
+                            } else if (data.status == 'failed') {
+                                window.alert(data.msg);
+                            }
+                        }
+                    });
+                });
+            })
+        </script>
+
+        <!-- 删除主机 -->
+        <script>
+            $(function () {
+                // 提交表单
+                $('#id_DeleteHostBtn').on('click', function () {
+                    $.ajax({
+                        cache: false,
+                        type: "POST",
+                        url: "{% url 'host_management:del_host' %}",
+                        data: $('#id_DeleteHostForm').serialize(),
+                        async: true,
+                        beforeSend: function (xhr, settings) {
+                            xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                        },
+                        success: function (data) {
+                            if (data.status == 'success') {
+                               window.location.href = "{% url 'host_management:host_list' %}";
+                            } else if (data.status == 'failed') {
+                                window.alert(data.msg);
+                            }
+                        }
+                    });
+                });
+            })
+        </script>
+
+{#    {% endfor %}#}
+</body>
+</html>

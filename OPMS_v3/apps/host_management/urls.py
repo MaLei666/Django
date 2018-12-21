@@ -25,8 +25,8 @@ urlpatterns = [
     # path('info/<int:host_id>', DeleteHostView.as_view(), name='del_host'),
 
     # 修改主机
-    path('info/edit', EditHostInfoView.as_view(), name='edit_host'),
-    # path('info/<int:host_id>', EditHostInfoView.as_view(), name='edit_host'),
+    # path('info/edit', EditHostInfoView.as_view(), name='edit_host'),
+    path('info/<int:host_id>', EditHostInfoView.as_view(), name='edit_host'),
 
     # 添加主机服务
     path('service/add', AddHostServiceView.as_view(), name='add_host_service'),
@@ -72,6 +72,78 @@ urlpatterns = [
 
     # 操作记录
     path('operation/record', HostOperationView.as_view(), name='host_op_record'),
+
+    # 操作系统列表
+    path('os/list', OSListView.as_view(), name='os_List'),
+
+    # 添加系统
+    path('os/add', AddOSView.as_view(), name='add_os'),
+
+    # 修改系统
+    path('os/edit', EditOSView.as_view(), name='edit_os'),
+
+    # 删除系统
+    path('os/delete', DeleteOSView.as_view(), name='del_os'),
+
+    # 项目列表
+    path('project/list', ProjectListView.as_view(), name='project_List'),
+
+    # 添加项目
+    path('project/add', AddProjectView.as_view(), name='add_project'),
+
+    # 编辑项目
+    path('project/edit', EditProjectView.as_view(), name='edit_project'),
+
+    # 删除项目
+    path('project/delete', DeleteProjectView.as_view(), name='del_project'),
+
+    # 用途列表
+    path('use/list', UseListView.as_view(), name='use_List'),
+
+    # 添加用途
+    path('use/add', AddUseView.as_view(), name='add_use'),
+
+    # 修改用途
+    path('use/edit', EditUseView.as_view(), name='edit_use'),
+
+    # 删除用途
+    path('use/delete', DeleteUseView.as_view(), name='del_use'),
+
+    # 端口映射列表
+    path('port/to/port/list', PortToPortListView.as_view(), name='port_port_list'),
+
+    # 添加端口映射
+    path('port/to/port/add', AddPortToPortView.as_view(), name='port_port_add'),
+
+    # 修改端口映射
+    path('port/to/port/edit', EditPortToPortView.as_view(), name='port_port_edit'),
+
+    # 删除端口映射
+    path('port/to/port/delete', DeletePortToPortView.as_view(), name='port_port_del'),
+
+    # 域名列表
+    path('domainname/list', DomainNameListView.as_view(), name='domain_name_list'),
+
+    # 添加域名
+    path('domainname/add', AddDomainNameView.as_view(), name='domain_name_add'),
+
+    # 编辑域名
+    path('domainname/edit', EditDomainNameView.as_view(), name='domain_name_edit'),
+
+    # 删除域名
+    path('domainname/delete', DeleteDomainNameView.as_view(), name='domain_name_del'),
+
+    # 域名解析列表
+    path('domainname/resolve/list', DomainNameResolveListView.as_view(), name='domain_resolve_list'),
+
+    # 添加域名解析
+    path('domainname/resolve/add', AddDomainNameResolveView.as_view(), name='domain_resolve_add'),
+
+    # 编辑域名解析
+    path('domainname/resolve/edit', EditDomainNameResolveView.as_view(), name='domain_resolve_edit'),
+
+    # 删除域名解析
+    path('domainname/resolve/delete', DeleteDomainNameResolveView.as_view(), name='domain_resolve_del'),
 
 ]
 

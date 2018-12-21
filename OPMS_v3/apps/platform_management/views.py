@@ -26,52 +26,52 @@ from .forms import *
 from .models import *
 
 
-# ######################################
-# # 内部平台列表
-# ######################################
-# class CompanyPlatformListView(LoginStatusCheck, View):
-#     def get(self, request):
-#         # 页面选择
-#         web_chose_left_1 = 'platform'
-#         web_chose_left_2 = 'company'
-#         web_chose_middle = ''
-#
-#         title = '内部平台'
-#
-#         platforms = PlatformInfo.objects.filter(belong=1).filter(is_public=True)
-#
-#         context = {
-#             'web_chose_left_1': web_chose_left_1,
-#             'web_chose_left_2': web_chose_left_2,
-#             'web_chose_middle': web_chose_middle,
-#             'title': title,
-#             'platforms': platforms,
-#         }
-#         return render(request, 'platform-management/platform_list.html', context=context)
+######################################
+# 内部平台列表
+######################################
+class CompanyPlatformListView(LoginStatusCheck, View):
+    def get(self, request):
+        # 页面选择
+        web_chose_left_1 = 'platform'
+        web_chose_left_2 = 'company'
+        web_chose_middle = ''
+
+        title = '内部平台'
+
+        platforms = PlatformInfo.objects.filter(belong=1).filter(is_public=True)
+
+        context = {
+            'web_chose_left_1': web_chose_left_1,
+            'web_chose_left_2': web_chose_left_2,
+            'web_chose_middle': web_chose_middle,
+            'title': title,
+            'platforms': platforms,
+        }
+        return render(request, 'platform-management/platform_list.html', context=context)
 
 
-# ######################################
-# # 运维平台列表
-# ######################################
-# class OpsPlatformListView(LoginStatusCheck, View):
-#     def get(self, request):
-#         # 页面选择
-#         web_chose_left_1 = 'platform'
-#         web_chose_left_2 = 'ops'
-#         web_chose_middle = ''
-#
-#         title = '运维平台'
-#
-#         platforms = PlatformInfo.objects.filter(belong=2).filter(is_public=True)
-#
-#         context = {
-#             'web_chose_left_1': web_chose_left_1,
-#             'web_chose_left_2': web_chose_left_2,
-#             'web_chose_middle': web_chose_middle,
-#             'title': title,
-#             'platforms': platforms,
-#         }
-#         return render(request, 'platform-management/platform_list.html', context=context)
+######################################
+# 运维平台列表
+######################################
+class OpsPlatformListView(LoginStatusCheck, View):
+    def get(self, request):
+        # 页面选择
+        web_chose_left_1 = 'platform'
+        web_chose_left_2 = 'ops'
+        web_chose_middle = ''
+
+        title = '运维平台'
+
+        platforms = PlatformInfo.objects.filter(belong=2).filter(is_public=True)
+
+        context = {
+            'web_chose_left_1': web_chose_left_1,
+            'web_chose_left_2': web_chose_left_2,
+            'web_chose_middle': web_chose_middle,
+            'title': title,
+            'platforms': platforms,
+        }
+        return render(request, 'platform-management/platform_list.html', context=context)
 
 
 ######################################
@@ -102,43 +102,43 @@ class EditPlatformUserView(LoginStatusCheck, View):
             return HttpResponse('{"status":"failed", "msg":"修改用户失败！"}', content_type='application/json')
 
 
-# ######################################
-# # 其它平台列表
-# ######################################
-# class OtherPlatformListView(LoginStatusCheck, View):
-#     def get(self, request):
-#         # 页面选择
-#         web_chose_left_1 = 'platform'
-#         web_chose_left_2 = 'other'
-#         web_chose_middle = ''
-#
-#         title = '其它平台'
-#
-#         platforms = PlatformInfo.objects.filter(belong=3).filter(add_user=request.user)
-#
-#         platform_nums = platforms.count()
-#
-#         # 判断页码
-#         try:
-#             page = request.GET.get('page', 1)
-#         except PageNotAnInteger:
-#             page = 1
-#
-#         # 对取到的数据进行分页，记得定义每页的数量
-#         p = Paginator(platforms, 17, request=request)
-#
-#         # 分页处理后的 QuerySet
-#         platforms = p.page(page)
-#
-#         context = {
-#             'web_chose_left_1': web_chose_left_1,
-#             'web_chose_left_2': web_chose_left_2,
-#             'web_chose_middle': web_chose_middle,
-#             'title': title,
-#             'platforms': platforms,
-#             'platform_nums': platform_nums,
-#         }
-#         return render(request, 'platform-management/user_platform_list.html', context=context)
+######################################
+# 其它平台列表
+######################################
+class OtherPlatformListView(LoginStatusCheck, View):
+    def get(self, request):
+        # 页面选择
+        web_chose_left_1 = 'platform'
+        web_chose_left_2 = 'other'
+        web_chose_middle = ''
+
+        title = '其它平台'
+
+        platforms = PlatformInfo.objects.filter(belong=3).filter(add_user=request.user)
+
+        platform_nums = platforms.count()
+
+        # 判断页码
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # 对取到的数据进行分页，记得定义每页的数量
+        p = Paginator(platforms, 17, request=request)
+
+        # 分页处理后的 QuerySet
+        platforms = p.page(page)
+
+        context = {
+            'web_chose_left_1': web_chose_left_1,
+            'web_chose_left_2': web_chose_left_2,
+            'web_chose_middle': web_chose_middle,
+            'title': title,
+            'platforms': platforms,
+            'platform_nums': platform_nums,
+        }
+        return render(request, 'platform-management/user_platform_list.html', context=context)
 
 
 ######################################

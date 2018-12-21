@@ -28,7 +28,7 @@ urlpatterns = [
     path('host/management/', include('host_management.urls')),
 
     # platform management
-    # path('platform/management/', include('platform_management.urls')),
+    path('platform/management/', include('platform_management.urls')),
 
     # message
     # path('message/', include('message.urls')),

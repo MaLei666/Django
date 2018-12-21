@@ -73,7 +73,47 @@ class EditHostServiceForm(forms.Form):
     start_cmd = forms.CharField(max_length=100, required=True)
     desc = forms.CharField(max_length=200, required=False)
 
+######################################
+# 添加系统表单
+######################################
+class AddOsForm(forms.Form):
+    name = forms.CharField(min_length=2, max_length=20, required=True)
+    version = forms.CharField(max_length=20, required=True)
 
+######################################
+# 添加项目
+######################################
+class AddProjectForm(forms.Form):
+    name = forms.CharField(min_length=2, max_length=20, required=True)
+    pro_user = forms.CharField(max_length=20, required=True)
+    run_env = forms.CharField(max_length=20, required=True)
+
+
+######################################
+# 编辑项目
+######################################
+class EditProjectForm(forms.Form):
+    name = forms.CharField(min_length=2, max_length=20, required=True)
+    pro_user = forms.CharField(max_length=20, required=True)
+    run_env = forms.CharField(max_length=20, required=True)
+
+######################################
+# 添加用途
+######################################
+class AddUseForm(forms.Form):
+    name = forms.CharField(min_length=2, max_length=20, required=True)
+
+######################################
+# 编辑用途
+######################################
+class EditUseForm(forms.Form):
+    name = forms.CharField(min_length=2, max_length=20, required=True)
+######################################
+# 编辑系统表单
+######################################
+class EditOsForm(forms.Form):
+    name = forms.CharField(min_length=2, max_length=20, required=True)
+    version = forms.CharField(max_length=20, required=True)
 
 ######################################
 # 添加数据库信息
@@ -83,7 +123,6 @@ class AddDatabaseInfoForm(forms.Form):
     db_version = forms.CharField(max_length=20, required=True)
     db_admin_user = forms.CharField(min_length=2, max_length=20, required=True)
     db_admin_pass = forms.CharField(min_length=2, max_length=50, required=True)
-
 
 ######################################
 # 修改数据库信息
@@ -127,82 +166,55 @@ class EditDatabaseUserForm(forms.Form):
     password = forms.CharField(min_length=2, max_length=50, required=True)
     grant_login = forms.CharField(max_length=50, required=True)
 
+######################################
+# 添加映射
+######################################
+class AddPortToPortForm(forms.Form):
+    ip_out = forms.GenericIPAddressField(required=False)
+    port_out = forms.IntegerField(required=True)
+    ip_in = forms.GenericIPAddressField(required=True)
+    port_in = forms.IntegerField(required=True)
+    use = forms.CharField(max_length=20, required=False)
+    desc = forms.CharField(max_length=200, required=False)
 
-# ######################################
-# # 添加设备表单
-# ######################################
-# class AddNetDviceForm(forms.Form):
-#     category = forms.CharField(max_length=20, required=True)
-#     name = forms.CharField(max_length=20, required=True)
-#     address = forms.CharField(max_length=50, required=True)
-#     ip_in = forms.GenericIPAddressField(required=True)
-#     ip_out = forms.GenericIPAddressField(required=False)
-#     admin_user = forms.CharField(max_length=20, required=True)
-#     admin_pass = forms.CharField(max_length=50, required=True)
-#
-#
-# ######################################
-# # 修改设备表单
-# ######################################
-# class EditNetDviceForm(forms.Form):
-#     category = forms.CharField(max_length=20, required=True)
-#     name = forms.CharField(max_length=20, required=True)
-#     address = forms.CharField(max_length=50, required=True)
-#     ip_in = forms.GenericIPAddressField(required=True)
-#     ip_out = forms.GenericIPAddressField(required=False)
-#     admin_user = forms.CharField(max_length=20, required=True)
-#     admin_pass = forms.CharField(max_length=50, required=True)
-#
-#
-# ######################################
-# # 添加映射
-# ######################################
-# class AddPortToPortForm(forms.Form):
-#     ip_out = forms.GenericIPAddressField(required=False)
-#     port_out = forms.IntegerField(required=True)
-#     ip_in = forms.GenericIPAddressField(required=True)
-#     port_in = forms.IntegerField(required=True)
-#     use = forms.CharField(max_length=20, required=True)
-#     desc = forms.CharField(max_length=200, required=False)
-#
-#
-# ######################################
-# # 编辑映射
-# ######################################
-# class EditPortToPortForm(forms.Form):
-#     ip_out = forms.GenericIPAddressField(required=False)
-#     port_out = forms.IntegerField(required=True)
-#     ip_in = forms.GenericIPAddressField(required=True)
-#     port_in = forms.IntegerField(required=True)
-#     use = forms.CharField(max_length=20, required=True)
-#     desc = forms.CharField(max_length=200, required=False)
-#
-#
-# ######################################
-# # 添加域名
-# ######################################
-# class AddDomainNameForm(forms.Form):
-#     name = forms.CharField(max_length=50, required=True)
-#
-#
-# ######################################
-# # 修改域名
-# ######################################
-# class EditDomainNameForm(forms.Form):
-#     name = forms.CharField(max_length=50, required=True)
-#
-#
-# ######################################
-# # 添加域名解析
-# ######################################
-# class AddDomainNameResolveForm(forms.Form):
-#     name = forms.CharField(max_length=20, required=True)
-#     ip = forms.GenericIPAddressField(required=True)
-#
-#
-# ######################################
-# # 修改域名解析
-# ######################################
-# class EditDomainNameResolveForm(forms.Form):
-#     name = forms.CharField(max_length=20, required=True)
-#     ip = forms.GenericIPAddressField(required=True)
+
+######################################
+# 编辑映射
+######################################
+class EditPortToPortForm(forms.Form):
+    ip_out = forms.GenericIPAddressField(required=False)
+    port_out = forms.IntegerField(required=True)
+    ip_in = forms.GenericIPAddressField(required=True)
+    port_in = forms.IntegerField(required=True)
+    use = forms.CharField(max_length=20, required=False)
+    desc = forms.CharField(max_length=200, required=False)
+
+
+######################################
+# 添加域名
+######################################
+class AddDomainNameForm(forms.Form):
+    name = forms.CharField(max_length=50, required=True)
+
+
+######################################
+# 修改域名
+######################################
+class EditDomainNameForm(forms.Form):
+    name = forms.CharField(max_length=50, required=True)
+
+
+######################################
+# 添加域名解析
+######################################
+class AddDomainNameResolveForm(forms.Form):
+    name = forms.CharField(max_length=20, required=True)
+    ip = forms.GenericIPAddressField(required=True)
+
+
+######################################
+# 修改域名解析
+######################################
+class EditDomainNameResolveForm(forms.Form):
+    name = forms.CharField(max_length=20, required=True)
+    ip = forms.GenericIPAddressField(required=True)

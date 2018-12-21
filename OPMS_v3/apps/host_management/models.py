@@ -15,18 +15,84 @@ import datetime
 from users.models import UserProfile
 
 ######################################
+# 操作系统表
+######################################
+class OperatingSystemInfo(models.Model):
+    name = models.CharField(verbose_name='系统名称', max_length=30)
+    version = models.CharField(verbose_name='系统版本', max_length=10)
+    bit = models.PositiveSmallIntegerField(verbose_name='位数', choices=((32, '32位'), (64, '64位')), default=64)
+    add_user = models.ForeignKey(UserProfile, related_name='os_add_user', verbose_name='添加人', on_delete=models.CASCADE)
+    desc = models.CharField(verbose_name='描述', max_length=200, blank=True, null=True)
+    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user = models.ForeignKey(UserProfile, related_name='os_update_user', verbose_name='修改人',
+                                    on_delete=models.CASCADE)
+    update_time = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    status = models.PositiveSmallIntegerField(verbose_name='状态', choices=((1, '正常'), (0, '停用')))
+
+    class Meta:
+        verbose_name = '操作系统'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+######################################
+# 项目表
+######################################
+class ProjectInfo(models.Model):
+    name = models.CharField(verbose_name='项目名称', max_length=30)
+    op_user = models.ForeignKey(UserProfile, related_name='pro_op_user', verbose_name='运维人员', on_delete=models.CASCADE)
+    run_env = models.CharField(verbose_name='运行环境', max_length=100)
+    add_user = models.ForeignKey(UserProfile, related_name='pro_add_user', verbose_name='添加人', on_delete=models.CASCADE)
+    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user = models.ForeignKey(UserProfile, related_name='pro_update_user', verbose_name='修改人',
+                                    on_delete=models.CASCADE)
+    update_time = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    status = models.PositiveSmallIntegerField(verbose_name='状态', choices=((1, '正常'), (0, '停用')))
+
+    class Meta:
+        verbose_name = '项目'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+######################################
+# 用途表
+######################################
+class UseInfo(models.Model):
+    name = models.CharField(verbose_name='用途', max_length=30)
+    add_user = models.ForeignKey(UserProfile, related_name='use_add_user', verbose_name='添加人', on_delete=models.CASCADE)
+    desc = models.CharField(verbose_name='描述', max_length=200, blank=True, null=True)
+    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user = models.ForeignKey(UserProfile, related_name='use_update_user', verbose_name='修改人',
+                                    on_delete=models.CASCADE)
+    update_time = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    status = models.PositiveSmallIntegerField(verbose_name='状态', choices=((1, '正常'), (0, '停用')))
+
+    class Meta:
+        verbose_name = '用途'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+######################################
 # 主机信息表
 ######################################
 class HostInfo(models.Model):
     in_ip = models.GenericIPAddressField(verbose_name='内网IP')
     out_ip = models.GenericIPAddressField(verbose_name='外网IP', blank=True, null=True)
+    system = models.ForeignKey(OperatingSystemInfo, verbose_name='操作系统', on_delete=models.CASCADE, blank=True, null=True)
     hostname = models.CharField(verbose_name='主机名', max_length=30)
     ssh_port = models.IntegerField(verbose_name='远程端口',null=True)
     root_ssh = models.BooleanField(verbose_name='是否允许 root 远程', default=True)
+    use = models.ForeignKey(UseInfo, verbose_name='用途', on_delete=models.CASCADE, blank=True, null=True)
+    project = models.ForeignKey(ProjectInfo, verbose_name='项目', on_delete=models.CASCADE, blank=True, null=True)
     admin_user = models.CharField(verbose_name='管理员用户', max_length=20)
     admin_pass = models.CharField(verbose_name='管理员密码', max_length=50)
     add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
-    update_user = models.ForeignKey(UserProfile, related_name='host_update_user', verbose_name='修改人',
+    update_user = models.ForeignKey(UserProfile, related_name='host_update_user', verbose_name='负责人',
                                     on_delete=models.CASCADE)
     update_time = models.DateTimeField(verbose_name='修改时间', auto_now=True)
     desc = models.CharField(verbose_name='备注', max_length=200, blank=True, null=True)
@@ -149,6 +215,75 @@ class DatabaseUserInfo(models.Model):
     def __str__(self):
         return ("%s - %s") % (self.db.host.in_ip, self.username)
 
+######################################
+# 端口映射表
+######################################
+class PortToPortInfo(models.Model):
+    ip_out = models.GenericIPAddressField(verbose_name='公网 IP', null=True, blank=True)
+    port_out = models.IntegerField(verbose_name='外网端口')
+    ip_in = models.GenericIPAddressField(verbose_name='内网 IP')
+    port_in = models.IntegerField(verbose_name='内网端口')
+    use = models.CharField(verbose_name='用途', max_length=20)
+    desc = models.TextField(verbose_name='备注', null=True, blank=True)
+    add_user = models.ForeignKey(UserProfile, related_name='port_add_user', verbose_name='添加人',
+                                 on_delete=models.CASCADE)
+    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user = models.ForeignKey(UserProfile, related_name='port_update_user', verbose_name='修改人',
+                                    on_delete=models.CASCADE)
+    update_time = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    status = models.PositiveSmallIntegerField(verbose_name='状态', choices=((1, '正常'), (0, '停用')), default=1)
 
+    class Meta:
+        verbose_name = '端口映射表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return ("%s - %s") % (self.ip_in, self.port_in)
+
+
+######################################
+# 域名表
+######################################
+class DomainNameInfo(models.Model):
+    name = models.CharField(verbose_name='名称', max_length=50)
+    desc = models.TextField(verbose_name='备注', null=True, blank=True)
+    add_user = models.ForeignKey(UserProfile, related_name='dom_add_user', verbose_name='添加人',
+                                 on_delete=models.CASCADE)
+    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user = models.ForeignKey(UserProfile, related_name='dom_update_user', verbose_name='修改人',
+                                    on_delete=models.CASCADE)
+    update_time = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    status = models.PositiveSmallIntegerField(verbose_name='状态', choices=((1, '正常'), (0, '停用')), default=1)
+
+    class Meta:
+        verbose_name = '域名表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+######################################
+# 域名解析表
+######################################
+class DomainNameResolveInfo(models.Model):
+    name = models.CharField(verbose_name='二级域名', max_length=20)
+    domain_name = models.ForeignKey(DomainNameInfo, verbose_name='域名', on_delete=models.CASCADE)
+    ip = models.GenericIPAddressField(verbose_name='IP地址')
+    desc = models.TextField(verbose_name='备注', null=True, blank=True)
+    add_user = models.ForeignKey(UserProfile, related_name='dom_res_add_user', verbose_name='添加人',
+                                 on_delete=models.CASCADE)
+    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user = models.ForeignKey(UserProfile, related_name='dom_res_update_user', verbose_name='修改人',
+                                    on_delete=models.CASCADE)
+    update_time = models.DateTimeField(verbose_name='修改时间', auto_now=True)
+    status = models.PositiveSmallIntegerField(verbose_name='状态', choices=((1, '正常'), (0, '停用')), default=1)
+
+    class Meta:
+        verbose_name = '域名解析表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '%s.%s' % (self.name, self.domain_name)
 
 
