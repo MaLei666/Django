@@ -25,8 +25,7 @@ urlpatterns = [
     # path('info/<int:host_id>', DeleteHostView.as_view(), name='del_host'),
 
     # 修改主机
-    # path('info/edit', EditHostInfoView.as_view(), name='edit_host'),
-    path('info/<int:host_id>', EditHostInfoView.as_view(), name='edit_host'),
+    path('info/edit', EditHostInfoView.as_view(), name='edit_host'),
 
     # 添加主机服务
     path('service/add', AddHostServiceView.as_view(), name='add_host_service'),

@@ -85,7 +85,6 @@ class AddOsForm(forms.Form):
 ######################################
 class AddProjectForm(forms.Form):
     name = forms.CharField(min_length=2, max_length=20, required=True)
-    pro_user = forms.CharField(max_length=20, required=True)
     run_env = forms.CharField(max_length=20, required=True)
 
 
@@ -94,7 +93,6 @@ class AddProjectForm(forms.Form):
 ######################################
 class EditProjectForm(forms.Form):
     name = forms.CharField(min_length=2, max_length=20, required=True)
-    pro_user = forms.CharField(max_length=20, required=True)
     run_env = forms.CharField(max_length=20, required=True)
 
 ######################################

@@ -219,8 +219,6 @@
                                             </table>
                                         </div>
                                     {% endfor %}
-
-
                                 </div>
                             </div>
 
@@ -594,7 +592,7 @@
                     $.ajax({
                         cache: false,
                         type: "POST",
-                        url: "{% url 'host_management:edit_host_service' %}",
+                        {#url: "{% url 'host_management:edit_host_service' %}",#}
                         data: $('#id_EditHostServiceForm{{ each_service.id }}').serialize(),
                         async: true,
                         beforeSend: function (xhr, settings) {
@@ -702,30 +700,30 @@
     </script>
 
     <!-- 修改主机 -->
-    <script>
-        $(function () {
-            // 提交表单
-            $('#id_EditHostBtn').on('click', function () {
-                $.ajax({
-                    cache: false,
-                    type: "POST",
-                    url: "{% url 'host_management:edit_host' %}",
-                    data: $('#id_EditHostForm').serialize(),
-                    async: true,
-                    beforeSend: function (xhr, settings) {
-                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-                    },
-                    success: function (data) {
-                        if (data.status == 'success') {
-                            window.location.href = "{% url 'host_management:host_info' records.id %}";
-                        } else if (data.status == 'failed') {
-                            window.alert(data.msg);
-                        }
-                    }
-                });
-            });
-        })
-    </script>
+{#    <script>#}
+{#        $(function () {#}
+{#            // 提交表单#}
+{#            $('#id_EditHostBtn').on('click', function () {#}
+{#                $.ajax({#}
+{#                    cache: false,#}
+{#                    type: "POST",#}
+{#                    url: "{% url 'host_management:edit_host' %}",#}
+{#                    data: $('#id_EditHostForm').serialize(),#}
+{#                    async: true,#}
+{#                    beforeSend: function (xhr, settings) {#}
+{#                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");#}
+{#                    },#}
+{#                    success: function (data) {#}
+{#                        if (data.status == 'success') {#}
+{#                            window.location.href = "{% url 'host_management:host_info' records.id %}";#}
+{#                        } else if (data.status == 'failed') {#}
+{#                            window.alert(data.msg);#}
+{#                        }#}
+{#                    }#}
+{#                });#}
+{#            });#}
+{#        })#}
+{#    </script>#}
 
     <!-- 添加服务 -->
     <script>

@@ -1004,7 +1004,7 @@ class ProjectListView(LoginStatusCheck, View):
             keyword = request.GET.get('keyword', '')
             if keyword != '':
                 projects = projects.filter(
-                    Q(name__icontains=keyword) | Q(run_env__icontains=keyword) | Q(pro_user__icontains=keyword) | Q(
+                    Q(name__icontains=keyword) | Q(run_env__icontains=keyword) | Q(
                         add_user__chinese_name__icontains=keyword) | Q(
                         update_user__chinese_name__icontains=keyword) | Q(op_user__chinese_name__icontains=keyword))
 
@@ -1054,7 +1054,6 @@ class AddProjectView(LoginStatusCheck, View):
                 # 添加记录
                 pro = ProjectInfo()
                 pro.name = name
-                pro.pro_user = request.POST.get('pro_user')
                 pro.op_user_id = int(request.POST.get('op_user'))
                 pro.run_env = request.POST.get('run_env')
                 pro.add_user = request.user
@@ -1089,7 +1088,6 @@ class EditProjectView(LoginStatusCheck, View):
             if edit_project_form.is_valid():
                 pro = ProjectInfo.objects.get(id=int(request.POST.get('pro_id')))
                 pro.name = request.POST.get('name')
-                pro.pro_user = request.POST.get('pro_user')
                 pro.op_user_id = int(request.POST.get('op_user'))
                 pro.run_env = request.POST.get('run_env')
                 pro.update_user = request.user
