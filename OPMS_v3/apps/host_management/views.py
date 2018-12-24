@@ -240,9 +240,10 @@ class DeleteHostView(LoginStatusCheck, View):
         try:
             host_id = request.POST.get('host_id')
             host = HostInfo.objects.get(id=int(host_id))
-            host.update_user = request.user
-            host.status = 0
-            host.save()
+            host.delete()
+            # host.update_user = request.user
+            # host.status = 0
+            # host.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
