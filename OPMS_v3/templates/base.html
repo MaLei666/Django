@@ -232,16 +232,16 @@
                                             <span>内部平台</span>
                                         </a>
                                     </li>
-
-                                    <li {% ifequal web_chose_left_2 'ops' %}class="active"{% endifequal %}>
-                                        <a href="{% url 'platform_management:platform_ops_list' %}">
-                                            <span>运维平台</span>
-                                        </a>
-                                    </li>
+{##}
+{#                                    <li {% ifequal web_chose_left_2 'ops' %}class="active"{% endifequal %}>#}
+{#                                        <a href="{% url 'platform_management:platform_ops_list' %}">#}
+{#                                            <span>运维平台</span>#}
+{#                                        </a>#}
+{#                                    </li>#}
 
                                     <li {% ifequal web_chose_left_2 'other' %}class="active"{% endifequal %}>
                                         <a href="{% url 'platform_management:platform_other_list' %}">
-                                            <span>其它平台</span>
+                                            <span>第三方平台</span>
                                         </a>
                                     </li>
                                 </ul>

@@ -580,7 +580,7 @@
                                     </div>
                                     <div class="col-md-9" style="padding: 0;">
                                         <input type="text" class="form-control" placeholder="备注（没有可以不填）"
-                                               maxlength="200" name="desc" required="" value="{{ each_host_record.desc }}" }>
+                                               maxlength="200" name="desc" required="" value="{{ each_host_record.desc }}">
                                     </div>
                                 </div>
                             </div>
@@ -594,7 +594,7 @@
             </div>
         </div>
 
-                <!-- 修改主机 -->
+        <!-- 修改主机 -->
         <script>
             $(function () {
                 // 提交表单
@@ -621,7 +621,7 @@
         </script>
 
 
-            <!-- 删除某台主机 -->
+        <!-- 删除某台主机 -->
         <div class="modal inmodal" id="StopHostModal{{ each_host_record.id }}" tabindex="-1" role="dialog" aria-hidden="true"
              data-backdrop="static">
             <div class="modal-dialog modal-sm" style="padding-top: 10%;">
@@ -666,7 +666,7 @@
                         },
                         success: function (data) {
                             if (data.status == 'success') {
-                               window.location.href = "{% url 'host_management:host_list' %}";
+                               window.location.reload();
                             } else if (data.status == 'failed') {
                                 window.alert(data.msg);
                             }
@@ -823,10 +823,5 @@
                 });
             });
         </script>
-
-
-
-
-
     {% endfor %}
 {% endblock base_footer_js %}

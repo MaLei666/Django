@@ -76,30 +76,8 @@
                                 <div>
                                     <table class="table table-bordered" style="font-size: 14px;color: #000">
                                         <tbody>
-
                                         <tr style="background-color: #1c2b36;font-size: 14px; font-weight: bolder;color: white;">
-                                            <td colspan="8">基本信息
-                                                {% if request.user.role > 1 %}
-                                                    <span class="dropdown pull-right">
-                                                        <a href="#" data-toggle="dropdown" class="dropdown-toggle">
-                                                            <i class="fa fa-ellipsis-v" style="font-size: 14px; color: white;"></i>
-                                                        </a>
-                                                                        <!-- 隐藏功能 -->
-                                                        <div class="dropdown-menu" style="width: 20px;">
-                                                            <div class="panel bg-white">
-                                                                <div class="list-group">
-                                                                    <a class="list-group-item" data-toggle="modal"
-                                                                       data-target="#EditHostModal">编辑</a>
-                                                                </div>
-                                                                <div class="list-group">
-                                                                    <a class="list-group-item" data-toggle="modal"
-                                                                       data-target="#StopHostModal">删除</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </span>
-                                                {% endif %}
-                                            </td>
+                                            <td colspan="8">基本信息</td>
                                         </tr>
 
                                         <tr class="gradeX odd" role="row">
@@ -121,9 +99,9 @@
                                             <td class="font-bold text-center">管理员</td>
                                             <td class="text-center">{{ records.admin_user }}</td>
                                             <td class="font-bold text-center">管理员密码</td>
-                                            <td class="text-center">{{ records.admin_pass }}</td>
+                                            <td class="text-center">
                                                 {% if request.user.role < 2 %}
-                                                    无权限{% else %}{{ records.admin_pass }}{% endif %}
+                                                    无权限{% else %}{{ records.admin_pass }}{% endif %}</td>
                                             <td class="font-bold text-center">备注</td>
                                             <td colspan="7" class="text-center">{{ records.desc }}</td>
                                         </tr>
@@ -673,58 +651,6 @@
 
 
 {% block base_footer_js %}
-    <!-- 删除主机 -->
-    <script>
-        $(function () {
-            // 提交表单
-            $('#id_DeleteHostBtn').on('click', function () {
-                $.ajax({
-                    cache: false,
-                    type: "POST",
-                    url: "{% url 'host_management:del_host' %}",
-                    data: $('#id_DeleteHostForm').serialize(),
-                    async: true,
-                    beforeSend: function (xhr, settings) {
-                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
-                    },
-                    success: function (data) {
-                        if (data.status == 'success') {
-                            window.location.href = "{% url 'host_management:host_list' %}";
-                        } else if (data.status == 'failed') {
-                            window.alert(data.msg);
-                        }
-                    }
-                });
-            });
-        })
-    </script>
-
-    <!-- 修改主机 -->
-{#    <script>#}
-{#        $(function () {#}
-{#            // 提交表单#}
-{#            $('#id_EditHostBtn').on('click', function () {#}
-{#                $.ajax({#}
-{#                    cache: false,#}
-{#                    type: "POST",#}
-{#                    url: "{% url 'host_management:edit_host' %}",#}
-{#                    data: $('#id_EditHostForm').serialize(),#}
-{#                    async: true,#}
-{#                    beforeSend: function (xhr, settings) {#}
-{#                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");#}
-{#                    },#}
-{#                    success: function (data) {#}
-{#                        if (data.status == 'success') {#}
-{#                            window.location.href = "{% url 'host_management:host_info' records.id %}";#}
-{#                        } else if (data.status == 'failed') {#}
-{#                            window.alert(data.msg);#}
-{#                        }#}
-{#                    }#}
-{#                });#}
-{#            });#}
-{#        })#}
-{#    </script>#}
-
     <!-- 添加服务 -->
     <script>
         $(function () {

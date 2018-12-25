@@ -22,9 +22,30 @@
                             </div>
                         </div>
 
-
                         <div class="panel-body" id="table_content">
+                            <div class="selectBox">
+                                <a class="btn btn-sm btn-default" data-toggle="modal"
+                                   data-target="#AddCompanyPlatformModal"><i
+                                        class="fa fa-plus"></i> 添加平台</a>
 
+                                <!-- 功能 -->
+                                <form class="navbar-form pull-right " role="search" style="margin-top: 0;">
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text"
+                                                   class="form-control input-sm bg-light no-border rounded "
+                                                   placeholder="关键词查找记录" style="width: 150px;">
+                                            <span class="input-group-btn">
+                                            <button type="submit" class="btn btn-sm bg-auto rounded">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                        </div>
+                                    </div>
+                                </form>
+                                <span style="font-size: 14px; padding-top: 5px;" class="pull-right">共 <b
+                                        style="color: orangered">{{ record_nums }}</b> 条</span>
+                            </div>
                             <!-- 列表 -->
                             <div class="row">
                                 <div class="col-sm-12">
@@ -32,33 +53,25 @@
                                         <!-- 标题行 -->
                                         <thead>
                                         <tr role="row">
-                                            <th class="text-center" width="150">logo</th>
-                                            <th class="text-center" width="200">平台名称</th>
-                                            <th class="text-center">地址</th>
-                                            <th class="text-center" width="150">用户名</th>
-                                            <th class="text-center" width="200">密码</th>
-                                            <th class="text-center" width="150">更新人</th>
-                                            <th class="text-center" width="200">更新时间</th>
-                                            <th class="text-center" width="200">操作</th>
+                                            <th class="text-center">ID</th>
+                                            <th class="text-center">平台名称</th>
+                                            <th class="text-center">平台地址</th>
+                                            <th class="text-center">用户名</th>
+                                            <th class="text-center">密码</th>
+                                            <th class="text-center">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
-                                        {% for each_platform in platforms %}
+                                        {% for each_platform in platforms.object_list %}
                                             <tr class="gradeX odd" role="row">
-                                                <td class="text-center"
-                                                    style="vertical-align:middle; padding-top: 2px; padding-bottom: 2px;">
-                                                    <img
-                                                            src="{{ MEDIA_URL }}{{ each_platform.logo }}"
-                                                            class="img-circle" style="width: 25px; height: 25px;">
-                                                </td>
+                                                <td class="text-center">{{ forloop.counter }}</td>
                                                 <td class="text-center"
                                                     style="vertical-align:middle;">{{ each_platform.name }}
                                                 </td>
                                                 <td class="text-center"
                                                     style="vertical-align:middle;">{{ each_platform.url }}
                                                 </td>
-
 
                                                 {% Get_PlatForm_Info request.user.id each_platform.id as infos %}
 
@@ -84,28 +97,6 @@
                                                     {% endif %}
                                                 </td>
 
-                                                <td class="text-center"
-                                                    style="vertical-align:middle;">
-                                                    {% if infos %}
-                                                        {% for each in infos %}
-                                                            {{ each.update_user.chinese_name }}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        暂无
-                                                    {% endif %}
-                                                </td>
-
-                                                <td class="text-center"
-                                                    style="vertical-align:middle;">
-                                                    {% if infos %}
-                                                        {% for each in infos %}
-                                                            {{ each.update_time }}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        暂无
-                                                    {% endif %}
-                                                </td>
-
                                                 <td class="text-center" style="vertical-align:middle;">
                                                     <a class="btn btn-xs" data-toggle="modal"
                                                        data-target="#EditPlatformUserModal{{ each_platform.id }}"
@@ -124,8 +115,47 @@
                                     </table>
                                 </div>
                             </div>
-
                         </div>
+{#                        <div class="panel-footer" style="padding-top: 0; padding-bottom: 0;">#}
+{#                            <div class="text-center">#}
+{#                                <ul class="pagination" style="margin-top: 10px; margin-bottom: 10px;">#}
+{##}
+{#                                    <!-- 上一页 -->#}
+{#                                    {% if platforms.has_previous %}#}
+{#                                        <li><a href="?{{ platforms.previous_page_number.querystring }}">上一页<span#}
+{#                                                class="sr-only"></span></a></li>#}
+{#                                        <li><a href="?{{ platforms.previous_page_number.querystring }}">&laquo;<span#}
+{#                                                class="sr-only"></span></a></li>#}
+{#                                    {% endif %}#}
+{##}
+{#                                    <!-- 页码 -->#}
+{#                                    {% for page in platforms.pages %}#}
+{#                                        {% if page %}#}
+{#                                            <!-- 当前页 -->#}
+{#                                            {% ifequal page platforms.number %}#}
+{#                                                <li class="active"><a href="?page={{ page }}">{{ page }}<span#}
+{#                                                        class="sr-only">(current)</span></a></li>#}
+{#                                                <!-- 其它页 -->#}
+{#                                            {% else %}#}
+{#                                                <li><a href="?page={{ page }}">{{ page }}<span#}
+{#                                                        class="sr-only"></span></a></li>#}
+{#                                            {% endifequal %}#}
+{#                                            <!-- 省略页 -->#}
+{#                                        {% else %}#}
+{#                                            <li><a href="">...<span class="sr-only"></span></a></li>#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{##}
+{#                                    <!-- 下一页 -->#}
+{#                                    {% if platforms.has_next %}#}
+{#                                        <li><a href="?{{ platforms.next_page_number.querystring }}">&raquo;<span#}
+{#                                                class="sr-only"></span></a></li>#}
+{#                                        <li><a href="?{{ platforms.next_page_number.querystring }}">下一页<span#}
+{#                                                class="sr-only"></span></a></li>#}
+{#                                    {% endif %}#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                        </div>#}
                     </div>
                 </div>
             </div>
@@ -134,6 +164,79 @@
 {% endblock base_content %}
 
 {% block base_footer_html %}
+    <div class="modal inmodal" id="AddCompanyPlatformModal" tabindex="-1" role="dialog" aria-hidden="true"
+         data-backdrop="static">
+        <div class="modal-dialog" style="width: 450px;">
+            <div class="modal-content" style="margin-top: 100px;">
+
+                <div class="modal-header"
+                     style="background-color: #1c2b36; color: white;padding-top: 10px; padding-bottom: 10px;">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <i class="icon-close" style="font-size: 18px;"></i>
+                    </button>
+                    <h4 class="modal-title">添加平台</h4>
+                </div>
+
+                <form method="post" id="id_AddCompanyPlatformForm">
+                    <div class="modal-body" style="height: 290px;">
+
+                        <div class="form-group"
+                             style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                            <div class="col-md-3">
+                                <span style="font-size: 14px;">平台名称：</span>
+                            </div>
+                            <div class="col-md-9" style="padding: 0;">
+                                <input type="text" class="form-control" placeholder="平台名称"
+                                           maxlength="20" name="name" required="">
+                            </div>
+                        </div>
+
+                        <div class="form-group"
+                             style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                            <div class="col-md-3">
+                                <span style="font-size: 14px;">平台地址：</span>
+                            </div>
+                            <div class="col-md-9" style="padding: 0;">
+                                <input type="text" class="form-control" placeholder="url"
+                                       maxlength="200" name="url" required="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="padding-top: 10px; padding-bottom: 10px;">
+                        <a class="btn btn-sm btn-default" data-dismiss="modal">取消</a>
+                        <a class="btn btn-sm btn-default" id="id_AddCompanyPlatformBtn">添加</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加平台 -->
+    <script>
+        $(function () {
+            // 提交表单
+            $('#id_AddCompanyPlatformBtn').on('click', function () {
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url: "{% url 'platform_management:platform_company_add' %}",
+                    data: $('#id_AddCompanyPlatformBtn').serialize(),
+                    async: true,
+                    beforeSend: function (xhr, settings) {
+                        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                    },
+                    success: function (data) {
+                        if (data.status == 'success') {
+                            window.location.reload();
+                        } else if (data.status == 'failed') {
+                            window.alert(data.msg);
+                        }
+                    }
+                });
+            });
+        })
+    </script>
+
     {% for each_platform in platforms %}
         <div class="modal inmodal" id="EditPlatformUserModal{{ each_platform.id }}" tabindex="-1" role="dialog"
              aria-hidden="true"

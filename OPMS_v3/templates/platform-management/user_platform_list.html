@@ -56,14 +56,14 @@
                                         <!-- 标题行 -->
                                         <thead>
                                         <tr role="row">
-                                            <th class="text-center" width="60">ID</th>
-                                            <th class="text-center" width="200">平台名称</th>
-                                            <th class="text-center">地址</th>
-                                            <th class="text-center" width="200">用户名</th>
-                                            <th class="text-center" width="200">密码</th>
-                                            <th class="text-center" width="200">更新人</th>
-                                            <th class="text-center" width="200">更新时间</th>
-                                            <th class="text-center" width="200">操作</th>
+                                            <th class="text-center">ID</th>
+                                            <th class="text-center">平台名称</th>
+                                            <th class="text-center">平台地址</th>
+                                            <th class="text-center">用户名</th>
+                                            <th class="text-center">密码</th>
+                                            <th class="text-center">更新人</th>
+                                            <th class="text-center">更新时间</th>
+                                            <th class="text-center">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -311,7 +311,7 @@
                         <div class="form-group"
                              style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
                             <div class="col-md-3">
-                                <span style="font-size: 14px;">平台 URL：</span>
+                                <span style="font-size: 14px;">平台地址：</span>
                             </div>
                             <div class="col-md-9" style="padding: 0;">
                                 <input type="text" class="form-control" placeholder="平台 URL" maxlength="200" name="url"
@@ -319,13 +319,11 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer" style="padding-right: 15px;padding-top: 10px; padding-bottom: 10px;">
+                        <a class="btn btn-sm btn-default" data-dismiss="modal">取消</a>
+                        <a class="btn btn-sm btn-default" id="id_AddOtherPlatformBtn">添加</a>
+                    </div>
                 </form>
-
-                <div class="modal-footer" style="padding-right: 15px;padding-top: 10px; padding-bottom: 10px;">
-                    <a class="btn btn-sm btn-default" data-dismiss="modal">取消</a>
-                    <a class="btn btn-sm btn-default" id="id_AddOtherPlatformBtn">添加</a>
-                </div>
-
             </div>
         </div>
     </div>

@@ -240,10 +240,6 @@ class DeleteHostView(LoginStatusCheck, View):
         try:
             host_id = request.POST.get('host_id')
             host = HostInfo.objects.get(id=int(host_id))
-            host.delete()
-            # host.update_user = request.user
-            # host.status = 0
-            # host.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -254,7 +250,7 @@ class DeleteHostView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "删除主机：%s" % (host.in_ip)
             op_record.save()
-
+            host.delete()
             return HttpResponse('{"status":"success", "msg":"主机删除成功！"}', content_type='application/json')
         except Exception as e:
             return HttpResponse('{"status":"falied", "msg":"主机删除失败！"}', content_type='application/json')
@@ -264,14 +260,13 @@ class DeleteHostView(LoginStatusCheck, View):
 # 修改主机
 ######################################
 class EditHostInfoView(LoginStatusCheck, View):
-    def post(self, request,host_id):
+    def post(self, request):
         if request.user.role > 1:
             edit_host_info_form = EditHostInfoForm(request.POST)
             if edit_host_info_form.is_valid():
 
                 # 获取主机
-                host_id = int(request.POST.get(host_id))
-                host = HostInfo.objects.get(id=host_id)
+                host = HostInfo.objects.get(id=int(request.POST.get('host_id')))
                 host.in_ip = request.POST.get('in_ip')
                 host.out_ip = request.POST.get('out_ip', '')
                 host.system_id = int(request.POST.get('system'))
@@ -458,7 +453,7 @@ class EditDatabaseInfoView(LoginStatusCheck, View):
                 op_record.status = 1
                 op_record.op_num = db_info.id
                 op_record.operation = 2
-                op_record.action = "修改数据库记录：%s" % (db_info.host.in_ip)
+                op_record.action = "修改数据库：%s" % (db_info.db_name)
                 op_record.save()
 
                 return HttpResponse('{"status":"success", "msg":"修改成功！"}', content_type='application/json')
@@ -475,9 +470,6 @@ class DeleteDatabaseInfoView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             db_info = DatabaseInfo.objects.get(id=int(request.POST.get('db_id')))
-            db_info.status = 0
-            db_info.update_user = request.user
-            db_info.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -488,7 +480,7 @@ class DeleteDatabaseInfoView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用数据库记录：%s" % (db_info.host.in_ip)
             op_record.save()
-
+            db_info.delete()
             return HttpResponse('{"status":"success", "msg":"删除成功！"}', content_type='application/json')
         else:
             return HttpResponse(status=403)
@@ -583,9 +575,6 @@ class DeleteDatabaseDBView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             db_info = DatabaseDBInfo.objects.get(id=int(request.POST.get('db_id')))
-            db_info.update_user = request.user
-            db_info.status = 0
-            db_info.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -595,7 +584,7 @@ class DeleteDatabaseDBView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "删除主机 [ %s ] 的数据库：%s" % (db_info.db.host.in_ip, db_info.name)
             op_record.save()
-
+            db_info.delete()
             return HttpResponse('{"status":"success", "msg":"删除成功！"}', content_type='application/json')
         else:
             return HttpResponse(status=403)
@@ -703,9 +692,6 @@ class DeleteDatabaseUserView(LoginStatusCheck, View):
         if request.user.role > 1:
             # 判断用户
             db_user = DatabaseUserInfo.objects.get(id=int(request.POST.get('db_user_id')))
-            db_user.status = 0
-            db_user.update_user = request.user
-            db_user.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -716,7 +702,7 @@ class DeleteDatabaseUserView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用主机 [ %s ] 的数据库用户：%s" % (db_user.db.host.in_ip, db_user.username)
             op_record.save()
-
+            db_user.delete()
             return HttpResponse('{"status":"success", "msg":"删除成功！"}', content_type='application/json')
         else:
             return HttpResponse(status=403)
@@ -814,9 +800,6 @@ class DeleteHostServiceView(LoginStatusCheck, View):
         try:
             ser_id = request.POST.get('ser_id')
             service = HostServiceInfo.objects.get(id=int(ser_id))
-            service.update_user = request.user
-            service.status = 0
-            service.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -827,6 +810,7 @@ class DeleteHostServiceView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用主机 [ %s ] 的服务：%s" % (service.host.in_ip, service.name)
             op_record.save()
+            service.delete()
 
             return HttpResponse('{"status":"success", "msg":"服务删除成功！"}', content_type='application/json')
         except Exception as e:
@@ -966,9 +950,6 @@ class DeleteOSView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             os = OperatingSystemInfo.objects.get(id=int(request.POST.get('sys_id')))
-            os.status = 0
-            os.update_user = request.user
-            os.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -979,7 +960,7 @@ class DeleteOSView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用操作系统：%s %s ( %s )" % (os.name, os.version, os.bit)
             op_record.save()
-
+            os.delete()
             return HttpResponse('{"status":"success", "msg":"操作系统删除成功！"}', content_type='application/json')
         else:
             return HttpResponse(status=403)
@@ -1118,9 +1099,6 @@ class DeleteProjectView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             pro = ProjectInfo.objects.get(id=int(request.POST.get('pro_id')))
-            pro.status = 0
-            pro.update_user = request.user
-            pro.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -1131,7 +1109,7 @@ class DeleteProjectView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用项目：%s" % (pro.name)
             op_record.save()
-
+            pro.delete()
             return HttpResponse('{"status":"success", "msg":"项目删除成功！"}', content_type='application/json')
         else:
             return HttpResponse(status=403)
@@ -1279,9 +1257,6 @@ class DeletePortToPortView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             port_info = PortToPortInfo.objects.get(id=int(request.POST.get('p_id')))
-            port_info.update_user = request.user
-            port_info.status = 0
-            port_info.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -1292,6 +1267,7 @@ class DeletePortToPortView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用 [ %s:%s ] 映射：[ %s:%s ]" % (port_info.ip_out, port_info.port_out, port_info.ip_in, port_info.port_in)
             op_record.save()
+            port_info.delete()
 
             return HttpResponse('{"status":"success", "msg":"停用映射成功！"}', content_type='application/json')
         else:
@@ -1430,9 +1406,6 @@ class DeleteDomainNameView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             domain_info = DomainNameInfo.objects.get(id=int(request.POST.get('do_id')))
-            domain_info.update_user = request.user
-            domain_info.status = 0
-            domain_info.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -1443,6 +1416,7 @@ class DeleteDomainNameView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用域名：%s" % domain_info.name
             op_record.save()
+            domain_info.delete()
 
             return HttpResponse('{"status":"success", "msg":"停用域名成功！"}', content_type='application/json')
         else:
@@ -1589,9 +1563,6 @@ class DeleteDomainNameResolveView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             domain_info = DomainNameResolveInfo.objects.get(id=int(request.POST.get('do_id')))
-            domain_info.update_user = request.user
-            domain_info.status = 0
-            domain_info.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -1602,6 +1573,7 @@ class DeleteDomainNameResolveView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用域名解析：%s.%s" % (domain_info.name, domain_info.domain_name.name)
             op_record.save()
+            domain_info.delete()
 
             return HttpResponse('{"status":"success", "msg":"停用域名成功！"}', content_type='application/json')
         else:
@@ -1735,9 +1707,6 @@ class DeleteUseView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
             use = UseInfo.objects.get(id=int(request.POST.get('use_id')))
-            use.status = 0
-            use.update_user = request.user
-            use.save()
 
             # 添加操作记录
             op_record = UserOperationRecord()
@@ -1748,6 +1717,7 @@ class DeleteUseView(LoginStatusCheck, View):
             op_record.operation = 4
             op_record.action = "停用用途：%s" % (use.name)
             op_record.save()
+            use.delete()
 
             return HttpResponse('{"status":"success", "msg":"用途删除成功！"}', content_type='application/json')
         else:
