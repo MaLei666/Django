@@ -21,9 +21,9 @@ from users.models import UserProfile
 class PlatformInfo(models.Model):
     name = models.CharField(verbose_name='平台名称', max_length=30)
     url = models.CharField(verbose_name='url', max_length=200)
-    # belong = models.PositiveSmallIntegerField(verbose_name='隶属', choices=((1, '公司平台'), (2, '第三方平台')))
+    belong = models.PositiveSmallIntegerField(verbose_name='隶属', choices=((1, '公司平台'), (2, '第三方平台')))
     # is_public = models.BooleanField(verbose_name='公开', default=True)
-    add_user = models.ForeignKey(UserProfile, verbose_name='添加人', related_name='pl_user', on_delete=models.CASCADE, default=1)
+    # add_user = models.ForeignKey(UserProfile, verbose_name='添加人', related_name='pl_user', on_delete=models.CASCADE, default=1)
     status = models.PositiveSmallIntegerField(verbose_name='状态', choices=((1, '正常'), (0, '停用')), default=1)
 
     class Meta:

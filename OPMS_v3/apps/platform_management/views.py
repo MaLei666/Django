@@ -38,9 +38,9 @@ class CompanyPlatformListView(LoginStatusCheck, View):
 
         title = '内部平台'
 
-        platforms = PlatformInfo.objects.filter(status=1)
+        inter_platforms = PlatformInfo.objects.filter(belong=1)
 
-        platform_nums = platforms.count()
+        platform_nums = inter_platforms.count()
 
         # 判断页码
         try:
@@ -49,10 +49,10 @@ class CompanyPlatformListView(LoginStatusCheck, View):
             page = 1
 
         # 对取到的数据进行分页，记得定义每页的数量
-        p = Paginator(platforms, 17, request=request)
+        p = Paginator(inter_platforms, 17, request=request)
 
         # 分页处理后的 QuerySet
-        platforms = p.page(page)
+        # inter_platforms = p.page(page)
 
 
         context = {
@@ -60,34 +60,10 @@ class CompanyPlatformListView(LoginStatusCheck, View):
             'web_chose_left_2': web_chose_left_2,
             'web_chose_middle': web_chose_middle,
             'title': title,
-            'platforms': platforms,
+            'inter_platforms': inter_platforms,
             'platform_nums': platform_nums,
         }
         return render(request, 'platform-management/platform_list.html', context=context)
-
-
-# ######################################
-# # 运维平台列表
-# ######################################
-# class OpsPlatformListView(LoginStatusCheck, View):
-#     def get(self, request):
-#         # 页面选择
-#         web_chose_left_1 = 'platform'
-#         web_chose_left_2 = 'ops'
-#         web_chose_middle = ''
-#
-#         title = '运维平台'
-#
-#         platforms = PlatformInfo.objects.filter(belong=2).filter(is_public=True)
-#
-#         context = {
-#             'web_chose_left_1': web_chose_left_1,
-#             'web_chose_left_2': web_chose_left_2,
-#             'web_chose_middle': web_chose_middle,
-#             'title': title,
-#             'platforms': platforms,
-#         }
-#         return render(request, 'platform-management/platform_list.html', context=context)
 
 ######################################
 # 添加内部平台
@@ -101,7 +77,7 @@ class AddCompanyPlatformView(LoginStatusCheck, View):
                 plat_obj = PlatformInfo()
                 plat_obj.name = request.POST.get('name')
                 plat_obj.url = request.POST.get('url')
-                plat_obj.add_user = request.user
+                # plat_obj.add_user = request.user
                 plat_obj.save()
                 return HttpResponse('{"status":"success", "msg":"添加内部平台成功！"}', content_type='application/json')
             else:
@@ -148,7 +124,7 @@ class OtherPlatformListView(LoginStatusCheck, View):
 
         title = '其它平台'
 
-        platforms = PlatformInfo.objects.filter(status=1)
+        platforms = PlatformInfo.objects.filter(belong=2)
 
         platform_nums = platforms.count()
 
@@ -187,7 +163,7 @@ class AddOtherPlatformView(LoginStatusCheck, View):
                 plat_obj = PlatformInfo()
                 plat_obj.name = name
                 plat_obj.url = url
-                plat_obj.add_user = request.user
+                # plat_obj.add_user = request.user
                 plat_obj.save()
                 return HttpResponse('{"status":"success", "msg":"添加个人平台成功！"}', content_type='application/json')
             else:

@@ -6,4 +6,3 @@ from django import forms
 class AddPlatformForm(forms.Form):
     name = forms.CharField(min_length=2, max_length=20, required=True)
     url=forms.CharField(min_length=2, max_length=50, required=True)
-    add_user = forms.CharField(min_length=1, max_length=20, required=True)
