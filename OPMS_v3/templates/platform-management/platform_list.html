@@ -2,7 +2,6 @@
 {% load staticfiles %}
 {% load platfom_tags %}
 
-
 {% block base_title %}
     {{ title }}
 {% endblock base_title %}
@@ -36,10 +35,10 @@
                                                    class="form-control input-sm bg-light no-border rounded "
                                                    placeholder="关键词查找记录" style="width: 150px;">
                                             <span class="input-group-btn">
-                                            <button type="submit" class="btn btn-sm bg-auto rounded">
-                                                <i class="fa fa-search"></i>
-                                            </button>
-                                        </span>
+                                                <button type="submit" class="btn btn-sm bg-auto rounded">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                            </span>
                                         </div>
                                     </div>
                                 </form>
@@ -63,7 +62,7 @@
                                         </thead>
                                         <tbody>
 
-                                        {% for each_platform in inter_platforms.object_list %}
+                                        {% for each_platform in platforms.object_list %}
                                             <tr class="gradeX odd" role="row">
                                                 <td class="text-center">{{ forloop.counter }}</td>
                                                 <td class="text-center"
@@ -97,65 +96,64 @@
                                                     {% endif %}
                                                 </td>
 
-{#                                                <td class="text-center" style="vertical-align:middle;">#}
-{#                                                    <a class="btn btn-xs" data-toggle="modal"#}
-{#                                                       data-target="#EditPlatformUserModal{{ each_platform.id }}"#}
-{#                                                       style="background-color: #009688;color: white;">#}
-{#                                                        编辑用户#}
-{#                                                    </a>#}
-{#                                                    <a href="{{ each_platform.url }}" target="_blank" class="btn btn-xs"#}
-{#                                                       style="background-color: #f05050;color: white;">#}
-{#                                                        打开平台#}
-{#                                                    </a>#}
-{#                                                </td>#}
+                                                <td class="text-center" style="vertical-align:middle;">
+                                                    <a class="btn btn-xs" data-toggle="modal"
+                                                       data-target="#EditPlatformUserModal{{ each_platform.id }}"
+                                                       style="background-color: #009688;color: white;">
+                                                        编辑用户
+                                                    </a>
+                                                    <a href="{{ each_platform.url }}" target="_blank" class="btn btn-xs"
+                                                       style="background-color: #f05050;color: white;">
+                                                        打开平台
+                                                    </a>
+                                                </td>
                                             </tr>
                                         {% endfor %}
-
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
-{#                        <div class="panel-footer" style="padding-top: 0; padding-bottom: 0;">#}
-{#                            <div class="text-center">#}
-{#                                <ul class="pagination" style="margin-top: 10px; margin-bottom: 10px;">#}
-{##}
-{#                                    <!-- 上一页 -->#}
-{#                                    {% if inter_platforms.has_previous %}#}
-{#                                        <li><a href="?{{ inter_platforms.previous_page_number.querystring }}">上一页<span#}
-{#                                                class="sr-only"></span></a></li>#}
-{#                                        <li><a href="?{{ inter_platforms.previous_page_number.querystring }}">&laquo;<span#}
-{#                                                class="sr-only"></span></a></li>#}
-{#                                    {% endif %}#}
-{##}
-{#                                    <!-- 页码 -->#}
-{#                                    {% for page in inter_platforms.pages %}#}
-{#                                        {% if page %}#}
-{#                                            <!-- 当前页 -->#}
-{#                                            {% ifequal page inter_platforms.number %}#}
-{#                                                <li class="active"><a href="?page={{ page }}">{{ page }}<span#}
-{#                                                        class="sr-only">(current)</span></a></li>#}
-{#                                                <!-- 其它页 -->#}
-{#                                            {% else %}#}
-{#                                                <li><a href="?page={{ page }}">{{ page }}<span#}
-{#                                                        class="sr-only"></span></a></li>#}
-{#                                            {% endifequal %}#}
-{#                                            <!-- 省略页 -->#}
-{#                                        {% else %}#}
-{#                                            <li><a href="">...<span class="sr-only"></span></a></li>#}
-{#                                        {% endif %}#}
-{#                                    {% endfor %}#}
-{##}
-{#                                    <!-- 下一页 -->#}
-{#                                    {% if inter_platforms.has_next %}#}
-{#                                        <li><a href="?{{ inter_platforms.next_page_number.querystring }}">&raquo;<span#}
-{#                                                class="sr-only"></span></a></li>#}
-{#                                        <li><a href="?{{ inter_platforms.next_page_number.querystring }}">下一页<span#}
-{#                                                class="sr-only"></span></a></li>#}
-{#                                    {% endif %}#}
-{#                                </ul>#}
-{#                            </div>#}
-{#                        </div>#}
+                        <div class="panel-footer" style="padding-top: 0; padding-bottom: 0;">
+                            <div class="text-center">
+                                <ul class="pagination" style="margin-top: 10px; margin-bottom: 10px;">
+
+                                    <!-- 上一页 -->
+                                    {% if platforms.has_previous %}
+                                        <li><a href="?{{ platforms.previous_page_number.querystring }}">上一页<span
+                                                class="sr-only"></span></a></li>
+                                        <li><a href="?{{ platforms.previous_page_number.querystring }}">&laquo;<span
+                                                class="sr-only"></span></a></li>
+                                    {% endif %}
+
+                                    <!-- 页码 -->
+                                    {% for page in platforms.pages %}
+                                        {% if page %}
+                                            <!-- 当前页 -->
+                                            {% ifequal page platforms.number %}
+                                                <li class="active"><a href="?page={{ page }}">{{ page }}<span
+                                                        class="sr-only">(current)</span></a></li>
+                                                <!-- 其它页 -->
+                                            {% else %}
+                                                <li><a href="?page={{ page }}">{{ page }}<span
+                                                        class="sr-only"></span></a></li>
+                                            {% endifequal %}
+                                            <!-- 省略页 -->
+                                        {% else %}
+                                            <li><a href="">...<span class="sr-only"></span></a></li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <!-- 下一页 -->
+                                    {% if platforms.has_next %}
+                                        <li><a href="?{{ platforms.next_page_number.querystring }}">&raquo;<span
+                                                class="sr-only"></span></a></li>
+                                        <li><a href="?{{ platforms.next_page_number.querystring }}">下一页<span
+                                                class="sr-only"></span></a></li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -178,7 +176,7 @@
                 </div>
 
                 <form method="post" id="id_AddCompanyPlatformForm">
-                    <div class="modal-body" style="height: 290px;">
+                    <div class="modal-body" style="height: 110px;">
 
                         <div class="form-group"
                              style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
@@ -221,7 +219,7 @@
                     cache: false,
                     type: "POST",
                     url: "{% url 'platform_management:platform_company_add' %}",
-                    data: $('#id_AddCompanyPlatformBtn').serialize(),
+                    data: $('#id_AddCompanyPlatformForm').serialize(),
                     async: true,
                     beforeSend: function (xhr, settings) {
                         xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
@@ -238,7 +236,7 @@
         })
     </script>
 
-    {% for each_platform in inter_platforms %}
+    {% for each_platform in platforms.object_list %}
         <div class="modal inmodal" id="EditPlatformUserModal{{ each_platform.id }}" tabindex="-1" role="dialog"
              aria-hidden="true"
              data-backdrop="static">
@@ -291,7 +289,6 @@
                         <a class="btn btn-sm btn-default" data-dismiss="modal">取消</a>
                         <a class="btn btn-sm btn-default" id="id_EditPlatformUserBtn{{ each_platform.id }}">修改</a>
                     </div>
-
                 </div>
             </div>
         </div>

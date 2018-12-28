@@ -38,9 +38,9 @@ class CompanyPlatformListView(LoginStatusCheck, View):
 
         title = '内部平台'
 
-        inter_platforms = PlatformInfo.objects.filter(belong=1)
+        platforms = PlatformInfo.objects.filter(belong=1)
 
-        platform_nums = inter_platforms.count()
+        platform_nums = platforms.count()
 
         # 判断页码
         try:
@@ -49,18 +49,17 @@ class CompanyPlatformListView(LoginStatusCheck, View):
             page = 1
 
         # 对取到的数据进行分页，记得定义每页的数量
-        p = Paginator(inter_platforms, 17, request=request)
+        p = Paginator(platforms, 17, request=request)
 
         # 分页处理后的 QuerySet
-        # inter_platforms = p.page(page)
-
+        platforms = p.page(page)
 
         context = {
             'web_chose_left_1': web_chose_left_1,
             'web_chose_left_2': web_chose_left_2,
             'web_chose_middle': web_chose_middle,
             'title': title,
-            'inter_platforms': inter_platforms,
+            'platforms': platforms,
             'platform_nums': platform_nums,
         }
         return render(request, 'platform-management/platform_list.html', context=context)
@@ -75,15 +74,40 @@ class AddCompanyPlatformView(LoginStatusCheck, View):
             url = request.POST.get("url", "")
             if (name != "") and (url != ""):
                 plat_obj = PlatformInfo()
-                plat_obj.name = request.POST.get('name')
-                plat_obj.url = request.POST.get('url')
-                # plat_obj.add_user = request.user
+                plat_obj.name = name
+                plat_obj.url = url
+                plat_obj.belong = 1
+                plat_obj.add_user = request.user
                 plat_obj.save()
                 return HttpResponse('{"status":"success", "msg":"添加内部平台成功！"}', content_type='application/json')
             else:
                 return HttpResponse('{"status":"failed", "msg":"填写错误！"}', content_type='application/json')
         except Exception as e:
             return HttpResponse('{"status":"failed", "msg":"未知错误！"}', content_type='application/json')
+
+######################################
+# 删除平台
+######################################
+class DeleteCompanyView(LoginStatusCheck, View):
+    def post(self, request):
+        try:
+            plat_id = request.POST.get('id')
+            host = HostInfo.objects.get(id=int(plat_id))
+
+            # 添加操作记录
+            op_record = UserOperationRecord()
+            op_record.op_user = request.user
+            op_record.belong = 1
+            op_record.status = 1
+            op_record.op_num = host.id
+            op_record.operation = 4
+            op_record.action = "删除主机：%s" % (host.in_ip)
+            op_record.save()
+            host.delete()
+            return HttpResponse('{"status":"success", "msg":"主机删除成功！"}', content_type='application/json')
+        except Exception as e:
+            return HttpResponse('{"status":"falied", "msg":"主机删除失败！"}', content_type='application/json')
+
 ######################################
 # 添加平台用户列表
 ######################################
@@ -159,34 +183,18 @@ class AddOtherPlatformView(LoginStatusCheck, View):
         try:
             name = request.POST.get("name", "")
             url = request.POST.get("url", "")
+
+
             if (name != "") and (url != ""):
                 plat_obj = PlatformInfo()
                 plat_obj.name = name
                 plat_obj.url = url
-                # plat_obj.add_user = request.user
+                plat_obj.belong = 2
+                plat_obj.add_user = request.user
                 plat_obj.save()
                 return HttpResponse('{"status":"success", "msg":"添加个人平台成功！"}', content_type='application/json')
             else:
                 return HttpResponse('{"status":"failed", "msg":"填写错误！"}', content_type='application/json')
         except Exception as e:
             return HttpResponse('{"status":"failed", "msg":"未知错误！"}', content_type='application/json')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -61,8 +61,6 @@
                                             <th class="text-center">平台地址</th>
                                             <th class="text-center">用户名</th>
                                             <th class="text-center">密码</th>
-                                            <th class="text-center">更新人</th>
-                                            <th class="text-center">更新时间</th>
                                             <th class="text-center">操作</th>
                                         </tr>
                                         </thead>
@@ -103,28 +101,6 @@
                                                     {% endif %}
                                                 </td>
 
-                                                <td class="text-center"
-                                                    style="vertical-align:middle;">
-                                                    {% if infos %}
-                                                        {% for each in infos %}
-                                                            {{ each.update_user.chinese_name }}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        暂无
-                                                    {% endif %}
-                                                </td>
-
-                                                <td class="text-center"
-                                                    style="vertical-align:middle;">
-                                                    {% if infos %}
-                                                        {% for each in infos %}
-                                                            {{ each.update_time }}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        暂无
-                                                    {% endif %}
-                                                </td>
-
                                                 <td class="text-center" style="vertical-align:middle;">
                                                     <a class="btn btn-xs" data-toggle="modal"
                                                        data-target="#EditPlatformUserModal{{ each_platform.id }}"
@@ -143,7 +119,6 @@
                                     </table>
                                 </div>
                             </div>
-
                         </div>
 
                         <!-- 页码 -->
