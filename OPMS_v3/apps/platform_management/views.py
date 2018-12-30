@@ -24,6 +24,7 @@ import datetime
 from utils.login_check import LoginStatusCheck
 from .forms import *
 from .models import *
+from operation_record.models import UserOperationRecord
 
 
 ######################################
@@ -86,27 +87,59 @@ class AddCompanyPlatformView(LoginStatusCheck, View):
             return HttpResponse('{"status":"failed", "msg":"未知错误！"}', content_type='application/json')
 
 ######################################
+# 修改平台
+######################################
+class EditPlatInfoView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            edit_host_info_form = EditPlatformForm(request.POST)
+            if edit_host_info_form.is_valid():
+
+                # 获取主机
+                plat = PlatformInfo.objects.get(id=int(request.POST.get('plat_id')))
+                plat.name = request.POST.get('name')
+                plat.url = request.POST.get('url')
+                plat.save()
+
+                # # 添加操作记录
+                # op_record = UserOperationRecord()
+                # op_record.op_user = request.user
+                # op_record.belong = 1
+                # op_record.status = 1
+                # op_record.op_num = plat.id
+                # op_record.operation = 2
+                # op_record.action = "修改平台：%s" % plat.name
+                # op_record.save()
+
+                return HttpResponse('{"status":"success", "msg":"平台信息修改成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"平台信息填写错误，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
 # 删除平台
 ######################################
-class DeleteCompanyView(LoginStatusCheck, View):
+class DeletePlatformView(LoginStatusCheck, View):
     def post(self, request):
         try:
-            plat_id = request.POST.get('id')
-            host = HostInfo.objects.get(id=int(plat_id))
+            plat_id = request.POST.get('plat_id')
+            plat = PlatformInfo.objects.get(id=int(plat_id))
 
             # 添加操作记录
             op_record = UserOperationRecord()
             op_record.op_user = request.user
             op_record.belong = 1
             op_record.status = 1
-            op_record.op_num = host.id
+            op_record.op_num = plat.id
             op_record.operation = 4
-            op_record.action = "删除主机：%s" % (host.in_ip)
+            op_record.action = "删除平台：%s" % (plat.name)
             op_record.save()
-            host.delete()
-            return HttpResponse('{"status":"success", "msg":"主机删除成功！"}', content_type='application/json')
+            plat.delete()
+            return HttpResponse('{"status":"success", "msg":"平台删除成功！"}', content_type='application/json')
         except Exception as e:
-            return HttpResponse('{"status":"falied", "msg":"主机删除失败！"}', content_type='application/json')
+            return HttpResponse('{"status":"falied", "msg":"平台删除失败！"}', content_type='application/json')
 
 ######################################
 # 添加平台用户列表

@@ -134,14 +134,6 @@
                                                         style="vertical-align:middle;">
                                                         {% if each_db_record.host.out_ip %}
                                                             {{ each_db_record.host.out_ip }}{% else %}暂无{% endif %}</td>
-{#                                                    <td class="text-center"#}
-{#                                                        style="vertical-align:middle;">{{ each_db_record.host.system.name }} {{ each_db_record.host.system.version }}#}
-{#                                                        ( {{ each_db_record.host.system.get_bit_display }} )#}
-{#                                                    </td>#}
-{#                                                    <td class="text-center"#}
-{#                                                        style="vertical-align:middle;">{{ each_db_record.host.op_env.name }}</td>#}
-{#                                                    <td class="text-center"#}
-{#                                                        style="vertical-align:middle;">{{ each_db_record.host.idc.name }}</td>#}
                                                     <td class="text-center"
                                                         style="vertical-align:middle;">{{ each_db_record.db_name }}
                                                         - {{ each_db_record.db_version }}</td>
@@ -258,8 +250,7 @@
                                 <select name="host_id" class="selectpicker form-control" data-live-search="true"
                                         style="display: none;">
                                     {% for each_host in hosts %}
-                                        <option value="{{ each_host.id }}">{{ each_host.in_ip }}
-                                            - {{ each_host.op_env.name }}</option>
+                                        <option value="{{ each_host.id }}">{{ each_host.in_ip }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -364,8 +355,7 @@
                                         {% for each_host in hosts %}
                                             <option value="{{ each_host.id }}"
                                                     {% if each_db_record.host.id == each_host.id %}
-                                                    selected {% endif %}>{{ each_host.in_ip }}
-                                                - {{ each_host.op_env.name }}</option>
+                                                    selected {% endif %}>{{ each_host.in_ip }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

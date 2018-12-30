@@ -1504,7 +1504,7 @@ class AddDomainNameResolveView(LoginStatusCheck, View):
                 op_record.status = 1
                 op_record.op_num = domain_info.id
                 op_record.operation = 1
-                op_record.action = "添加域名解析：%s.%s" % (domain_info.name, domain_info.domain_name.name)
+                op_record.action = "添加域名解析：%s" % (domain_info.name)
                 op_record.save()
 
                 return HttpResponse('{"status":"success", "msg":"添加域名解析成功！"}', content_type='application/json')

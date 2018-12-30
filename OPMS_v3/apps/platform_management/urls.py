@@ -25,6 +25,13 @@ urlpatterns = [
 
     # 修改平台用户列表
     path('user/edit', EditPlatformUserView.as_view(), name='platform_user_edit'),
+
+    # 删除平台
+    path('plat/delete', DeletePlatformView.as_view(), name='platform_delete'),
+
+    # 编辑平台
+    path('plat/edit', EditPlatInfoView.as_view(), name='platform_edit'),
+
 ]
 
 
