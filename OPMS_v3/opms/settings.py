@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     # 'online_management',
     # 爬虫数据
     'spider_data',
+    #区块链
+    'vechain',
 ]
 
 
@@ -118,7 +120,7 @@ DATABASES = {
         'NAME': 'opm',
         'USER': 'root',
         'PASSWORD': 'zkyr1006',
-        'HOST': '127.0.0.1',
+        'HOST': '58.132.209.229',
         'PORT': '3306',
     }
 }

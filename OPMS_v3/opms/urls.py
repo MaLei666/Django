@@ -43,6 +43,8 @@ urlpatterns = [
     # path('online/', include('online_management.urls')),
     path('spider/', include('spider_data.urls')),
 
+    path('blockchain/', include('vechain.urls')),
+
 ]
 
 
