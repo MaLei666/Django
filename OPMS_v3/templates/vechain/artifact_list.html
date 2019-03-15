@@ -132,16 +132,19 @@
                                                     <td class="text-center"
                                                         style="vertical-align:middle;">{{ each_artifact_record.artifact_id }}</td>
                                                     <td class="text-center"
-{#                                                        style="vertical-align:middle;"> {{% if each_artifact_record.status is 0 %}已生成 {% else %}#}
-{#                                                        已使用{% endif %} }}</td>#}
-                                                        style="vertical-align:middle;">{{ each_artifact_record.status }}</td>
+                                                        style="vertical-align:middle;"> {% if each_artifact_record.id_status is 0 %}
+                                                        <a  class="btn btn-xs" style="background-color: #5cb85c; color: white">已生成 {% else %}
+                                                         <a  class="btn btn-xs" style="background-color: #f06a6a; color: white">已使用{% endif %} </a>
+{#                                                        style="vertical-align:middle;">{{ each_artifact_record.id_status }}</td>#}
 
                                                     <td class="text-center"
                                                         style="vertical-align:middle;">{{ each_artifact_record.add_time }}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_artifact_record.update_user }}</td>
+                                                        style="vertical-align:middle;"> {% if each_artifact_record.update_user %}{{ each_artifact_record.update_user }}
+                                                        {% else %} 暂无 {% endif %}</td>
                                                     <td class="text-center"
-                                                        style="vertical-align:middle;">{{ each_artifact_record.update_time }}</td>
+                                                        style="vertical-align:middle;">{% if each_artifact_record.update_time %}{{ each_artifact_record.update_time }}
+                                                        {% else %} 暂无 {% endif %}</td>
                                                     <td class="text-center" style="vertical-align:middle;">
                                                         <a class="btn btn-xs"
 {#                                                           href="{% url 'host_management:host_info' each_artifact_record.id %}"#}
