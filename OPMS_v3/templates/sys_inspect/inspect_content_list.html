@@ -18,10 +18,10 @@
                             </div>
                         </div>
 
-                        <div class="selectBox" style="padding: 15px">
+                        <div class="selectBox" style="padding: 15px;padding-bottom: 0">
                             {% if request.user.role > 1 %}
                                     <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#AddDevModal"><i
-                                            class="fa fa-plus"></i> 添加设备</a>
+                                            class="fa fa-plus"></i> 添加任务</a>
                                 {% endif %}
 
                             <!-- 功能 -->
@@ -53,54 +53,56 @@
                                         <thead>
                                         <tr role="row">
                                             <th class="text-center">ID</th>
-                                            <th class="text-center">设备id</th>
-                                            <th class="text-center">设备名称</th>
-                                            <th class="text-center">设备状态</th>
-{#                                            <th class="text-center">单位名称</th>#}
-                                            <th class="text-center">安装位置</th>
+                                            <th class="text-center">任务名称</th>
+                                            <th class="text-center">任务类型</th>
+                                            <th class="text-center">执行时间</th>
                                             <th class="text-center">创建时间</th>
                                             <th class="text-center">操作</th>
                                         </tr>
                                         </thead>
                                         <tbody>
 
-                                        {% for each_device in devices.object_list %}
+                                        {% for each_content in contents.object_list %}
                                             <tr class="gradeX odd" role="row">
-                                                <td class="text-center">{{ forloop.counter }}</td>
                                                 <td class="text-center"
-                                                    style="vertical-align:middle;">{{ each_device.dev_id }}
+                                                    style="vertical-align:middle;">{{ each_content.id }}
                                                 </td>
                                                 <td class="text-center"
-                                                    style="vertical-align:middle;">{{ each_device.dev_name }}
+                                                    style="vertical-align:middle;">{{ each_content.task_name }}
                                                 </td>
                                                 <td class="text-center"
-                                                    style="vertical-align:middle;">{{ each_device.dev_status }}
+                                                    style="vertical-align:middle;">{{ each_content.task_type }}
                                                 </td>
                                                 <td class="text-center"
-                                                    style="vertical-align:middle;"> {% if each_device.dev_status is 1 %}
-                                                    <a  class="btn btn-xs" style="background-color: #1ab394; color: white">正常 {% else %}
-                                                     <a  class="btn btn-xs" style="background-color: #f8ac59; color: white">故障{% endif %} </a></td>
-{#                                                <td class="text-center"#}
-{#                                                    style="vertical-align:middle;">{{ each_device.unit_name }}#}
-{#                                                </td>#}
-                                                <td class="text-center"
-                                                    style="vertical-align:middle;">{{ each_device.install_position }}
+                                                    style="vertical-align:middle;"> {{ each_content.start_time }} ~ {{ each_content.end_time }}
                                                 </td>
                                                 <td class="text-center"
-                                                    style="vertical-align:middle;">{{ each_device.create_time }}
+                                                    style="vertical-align:middle;">{{ each_content.create_time }}
                                                 </td>
 
                                                 <td class="text-center" style="vertical-align:middle;">
                                                     <a type="button" class="btn btn-xs"
                                                        style="background-color: #1c84c6;color: white;"
                                                       data-toggle="modal"
-                                                       data-target="#EditDevModal{{ each_device.id }}">
+                                                       data-target="#ShowContModal{{ each_content.id }}">
+                                                        详情
+                                                    </a>
+                                                    <a type="button" class="btn btn-xs"
+                                                       style="background-color: #1c84c6;color: white;"
+                                                      data-toggle="modal"
+                                                       data-target="#DevContModal{{ each_content.id }}">
+                                                        设备
+                                                    </a>
+                                                    <a type="button" class="btn btn-xs"
+                                                       style="background-color: #1c84c6;color: white;"
+                                                      data-toggle="modal"
+                                                       data-target="#EditContModal{{ each_content.id }}">
                                                         修改
                                                     </a>
                                                     <button class="btn btn-xs"
                                                                 style="background-color: #c7254e;color: white;"
                                                                 data-toggle="modal"
-                                                                data-target="#DeleteDevModal{{ each_device.id }}">
+                                                                data-target="#DeleteContModal{{ each_content.id }}">
                                                         删除
                                                     </button>
                                                 </td>
@@ -116,18 +118,18 @@
                                 <ul class="pagination" style="margin-top: 10px; margin-bottom: 10px;">
 
                                     <!-- 上一页 -->
-                                    {% if devices.has_previous %}
-                                        <li><a href="?{{ devices.previous_page_number.querystring }}">上一页<span
+                                    {% if contents.has_previous %}
+                                        <li><a href="?{{ contents.previous_page_number.querystring }}">上一页<span
                                                 class="sr-only"></span></a></li>
-                                        <li><a href="?{{ devices.previous_page_number.querystring }}">&laquo;<span
+                                        <li><a href="?{{ contents.previous_page_number.querystring }}">&laquo;<span
                                                 class="sr-only"></span></a></li>
                                     {% endif %}
 
                                     <!-- 页码 -->
-                                    {% for page in devices.pages %}
+                                    {% for page in contents.pages %}
                                         {% if page %}
                                             <!-- 当前页 -->
-                                            {% ifequal page devices.number %}
+                                            {% ifequal page contents.number %}
                                                 <li class="active"><a href="?page={{ page }}">{{ page }}<span
                                                         class="sr-only">(current)</span></a></li>
                                                 <!-- 其它页 -->
@@ -142,10 +144,10 @@
                                     {% endfor %}
 
                                     <!-- 下一页 -->
-                                    {% if devices.has_next %}
-                                        <li><a href="?{{ devices.next_page_number.querystring }}">&raquo;<span
+                                    {% if contents.has_next %}
+                                        <li><a href="?{{ contents.next_page_number.querystring }}">&raquo;<span
                                                 class="sr-only"></span></a></li>
-                                        <li><a href="?{{ devices.next_page_number.querystring }}">下一页<span
+                                        <li><a href="?{{ contents.next_page_number.querystring }}">下一页<span
                                                 class="sr-only"></span></a></li>
                                     {% endif %}
                                 </ul>
@@ -225,7 +227,7 @@
         </div>
     </div>
 
-    <!-- 添加设备 -->
+    <!-- 添加平台 -->
     <script>
         $(function () {
             // 提交表单

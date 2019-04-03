@@ -159,5 +159,42 @@ class DeleteDevView(LoginStatusCheck, View):
             return HttpResponse('{"status":"falied", "msg":"巡检设备删除失败！"}', content_type='application/json')
 
 
+######################################
+# 巡检内容列表
+######################################
+class ContentViews(LoginStatusCheck, View):
+    def get(self, request):
+        # 页面选择
+        web_chose_left_1 = 'inspect'
+        web_chose_left_2 = 'contents'
+        web_chose_middle = ''
+
+        title = '巡检内容'
+
+        contents = InspectContentInfo.objects.filter(status=1)
+
+        contents_nums = contents.count()
+
+        # 判断页码
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # 对取到的数据进行分页，记得定义每页的数量
+        p = Paginator(contents, 17, request=request)
+
+        # 分页处理后的 QuerySet
+        contents = p.page(page)
+
+        context = {
+            'web_chose_left_1': web_chose_left_1,
+            'web_chose_left_2': web_chose_left_2,
+            'web_chose_middle': web_chose_middle,
+            'title': title,
+            'contents': contents,
+            'contents_nums': contents_nums,
+        }
+        return render(request, 'sys_inspect/inspect_content_list.html', context=context)
 
 

@@ -264,10 +264,17 @@
                                     <ul class="nav nav-sub dk" style="font-size: 12px;">
                                         <li {% ifequal web_chose_left_2 'devices' %}class="active"{% endifequal %}>
                                             <a href="{% url 'sys_inspect:inspect_devices_list' %}">
-                                                <span>设备查询</span>
+                                                <span>设备管理</span>
                                             </a>
                                         </li>
                                     </ul>
+                                    <ul class="nav nav-sub dk" style="font-size: 12px;">
+                                            <li {% ifequal web_chose_left_2 'contents' %}class="active"{% endifequal %}>
+                                                <a href="{% url 'sys_inspect:inspect_contents_list' %}">
+                                                    <span>任务管理</span>
+                                                </a>
+                                            </li>
+                                        </ul>
                                 </li>
                             {% endif %}
 
