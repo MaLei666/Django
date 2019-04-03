@@ -44,6 +44,7 @@ urlpatterns = [
     path('spider/', include('spider_data.urls')),
 
     path('blockchain/', include('vechain.urls')),
+    path('inspect/',include('sys_inspect.urls'))
 
 ]
 
