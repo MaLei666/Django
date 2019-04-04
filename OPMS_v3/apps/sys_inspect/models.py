@@ -69,7 +69,7 @@ class InspectDevInfo(models.Model):
 ######################################
 class InspectContentInfo(models.Model):
 
-    content_no =models.CharField(max_length=45,verbose_name='内容编号')
+    # content_no =models.CharField(max_length=45,verbose_name='内容编号')
     platform_id =models.CharField(max_length=45,verbose_name='平台ID',blank=True,null=True),
     dept_id =models.BigIntegerField(blank=True,null=True)
     unit_id =models.BigIntegerField(blank=True,null=True)

@@ -23,6 +23,12 @@ urlpatterns = [
     # 任务列表
     path('content/list', ContentViews.as_view(), name='inspect_contents_list'),
 
+    # 添加任务
+    path('content/add', AddContView.as_view(), name='inspect_contents_add'),
+
+    # 删除任务
+    path('content/delete', DeleteDevView.as_view(), name='inspect_contents_delete'),
+
 ]
 
 

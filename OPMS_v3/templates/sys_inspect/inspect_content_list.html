@@ -20,7 +20,7 @@
 
                         <div class="selectBox" style="padding: 15px;padding-bottom: 0">
                             {% if request.user.role > 1 %}
-                                    <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#AddDevModal"><i
+                                    <a class="btn btn-sm btn-default" data-toggle="modal" data-target="#AddContModal"><i
                                             class="fa fa-plus"></i> 添加任务</a>
                                 {% endif %}
 
@@ -90,7 +90,7 @@
                                                     <a type="button" class="btn btn-xs"
                                                        style="background-color: #1c84c6;color: white;"
                                                       data-toggle="modal"
-                                                       data-target="#DevContModal{{ each_content.id }}">
+                                                       data-target="#ContContModal{{ each_content.id }}">
                                                         设备
                                                     </a>
                                                     <a type="button" class="btn btn-xs"
@@ -161,7 +161,7 @@
 {% endblock base_content %}
 
 {% block base_footer_html %}
-    <div class="modal inmodal" id="AddDevModal" tabindex="-1" role="dialog" aria-hidden="true"
+    <div class="modal inmodal" id="AddContModal" tabindex="-1" role="dialog" aria-hidden="true"
          data-backdrop="static">
         <div class="modal-dialog" style="width: 450px;">
             <div class="modal-content" style="margin-top: 100px;">
@@ -171,43 +171,53 @@
                     <button type="button" class="close" data-dismiss="modal">
                         <i class="icon-close" style="font-size: 18px;"></i>
                     </button>
-                    <h4 class="modal-title">添加设备</h4>
+                    <h4 class="modal-title">添加任务</h4>
                 </div>
 
-                <form method="post" id="id_AddDevForm">
+                <form method="post" id="id_AddContForm">
                     <div class="form-group"
                          style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;padding-top: 20px">
                         <div class="col-md-3">
-                            <span style="font-size: 14px;">设备id：</span>
+                            <span style="font-size: 14px;">任务名称：</span>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" placeholder="设备id"
-                                       maxlength="20" name="dev_id" required="">
+                            <input type="text" class="form-control" placeholder="任务名称"
+                                       maxlength="20" name="task_name" required="">
                         </div>
                     </div>
 
                     <div class="form-group"
                          style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
                         <div class="col-md-3">
-                            <span style="font-size: 14px;">设备名称：</span>
+                            <span style="font-size: 14px;">任务类型：</span>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" placeholder="设备名称"
-                                       maxlength="20" name="dev_name" required="">
+                            <input type="text" class="form-control" placeholder="任务类型"
+                                       maxlength="20" name="task_type" required="">
                         </div>
                     </div>
 
                     <div class="form-group"
                          style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
                         <div class="col-md-3">
-                            <span style="font-size: 14px;">安装位置：</span>
+                            <span style="font-size: 14px;">开始时间：</span>
                         </div>
                         <div class="col-md-9">
-                            <input type="text" class="form-control" placeholder="安装位置"
-                                       maxlength="20" name="install_position" required="">
+                            <input type="text" class="form-control" placeholder="开始时间"
+                                       maxlength="20" name="start_time" required="">
                         </div>
                     </div>
 
+                    <div class="form-group"
+                         style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
+                        <div class="col-md-3">
+                            <span style="font-size: 14px;">结束时间：</span>
+                        </div>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" placeholder="结束时间"
+                                       maxlength="20" name="end_time" required="">
+                        </div>
+                    </div>
                     <div class="form-group"
                          style="vertical-align: middle;line-height: 34px;padding-bottom: 30px;">
                         <div class="col-md-3">
@@ -220,7 +230,7 @@
                     </div>
                     <div class="modal-footer" style="padding-top: 10px; padding-bottom: 10px;">
                         <a class="btn btn-sm btn-default" data-dismiss="modal">取消</a>
-                        <a class="btn btn-sm btn-default" id="id_AddDevBtn">添加</a>
+                        <a class="btn btn-sm btn-default" id="id_AddContBtn">添加</a>
                     </div>
                 </form>
             </div>
@@ -231,12 +241,12 @@
     <script>
         $(function () {
             // 提交表单
-            $('#id_AddDevBtn').on('click', function () {
+            $('#id_AddContBtn').on('click', function () {
                 $.ajax({
                     cache: false,
                     type: "POST",
-                    url: "{% url 'sys_inspect:inspect_devices_add' %}",
-                    data: $('#id_AddDevForm').serialize(),
+                    url: "{% url 'sys_inspect:inspect_contents_add' %}",
+                    data: $('#id_AddContForm').serialize(),
                     async: true,
                     beforeSend: function (xhr, settings) {
                         xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
@@ -255,7 +265,7 @@
 
     {% for each_device in devices.object_list %}
 {#        修改设备#}
-        <div class="modal inmodal" id="EditDevModal{{ each_device.id }}" tabindex="-1" role="dialog" aria-hidden="true"
+        <div class="modal inmodal" id="EditContModal{{ each_device.id }}" tabindex="-1" role="dialog" aria-hidden="true"
              data-backdrop="static">
             <div class="modal-dialog" style="width: 500px;">
                 <div class="modal-content" style="margin-top: 100px;" >
@@ -267,7 +277,7 @@
                         <h4 class="modal-title">修改设备</h4>
                     </div>
 
-                    <form method="post" id="id_EditDevForm{{ each_device.id }}">
+                    <form method="post" id="id_EditContForm{{ each_device.id }}">
                         <input type="hidden" name="dev_id" value="{{ each_device.id }}">
                             <div class="col-md-12" style="padding-top: 20px">
                                 <div class="form-group"
@@ -303,7 +313,7 @@
                             </div>
                         <div class="modal-footer" style="padding-right: 30px;padding-top: 10px; padding-bottom: 10px;">
                             <a class="btn btn-sm btn-default" data-dismiss="modal">取消</a>
-                            <a class="btn btn-sm btn-default" id="id_EditDevBtn{{ each_device.id }}">修改</a>
+                            <a class="btn btn-sm btn-default" id="id_EditContBtn{{ each_device.id }}">修改</a>
                         </div>
                     </form>
                 </div>
@@ -314,12 +324,12 @@
         <script>
             $(function () {
                 // 提交表单
-                $('#id_EditDevBtn{{ each_device.id }}').on('click', function () {
+                $('#id_EditContBtn{{ each_device.id }}').on('click', function () {
                     $.ajax({
                         cache: false,
                         type: "POST",
                         url: "{% url 'sys_inspect:inspect_device_edit'%}",
-                        data: $('#id_EditDevForm{{ each_device.id }}').serialize(),
+                        data: $('#id_EditContForm{{ each_device.id }}').serialize(),
                         async: true,
                         beforeSend: function (xhr, settings) {
                             xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
@@ -337,7 +347,7 @@
         </script>
 
         <!-- 删除设备 -->
-        <div class="modal inmodal" id="DeleteDevModal{{ each_device.id }}" tabindex="-1" role="dialog" aria-hidden="true"
+        <div class="modal inmodal" id="DeleteContModal{{ each_device.id }}" tabindex="-1" role="dialog" aria-hidden="true"
              data-backdrop="static">
             <div class="modal-dialog modal-sm" style="padding-top: 10%;">
                 <div class="modal-content">
@@ -349,7 +359,7 @@
                         <h4 class="modal-title">警告！</h4>
                     </div>
 
-                    <form method="post" id="id_DeleteDevForm{{ each_device.id }}">
+                    <form method="post" id="id_DeleteContForm{{ each_device.id }}">
                         <input type="hidden" name="dev_id" value="{{ each_device.id }}">
                         <div class="modal-body">
                             <span style="font-size: 16px;color: black;">是否确定删除该平台？</span>
@@ -358,7 +368,7 @@
 
                     <div class="modal-footer" style="padding: 10px;">
                         <a class="btn btn-default" data-dismiss="modal" style="padding: 2px 10px;">取消</a>
-                        <a class="btn btn-default" id="id_DeleteDevBtn{{ each_device.id }}" style="padding: 2px 10px;">确定</a>
+                        <a class="btn btn-default" id="id_DeleteContBtn{{ each_device.id }}" style="padding: 2px 10px;">确定</a>
                     </div>
 
                 </div>
@@ -369,12 +379,12 @@
         <script>
             $(function () {
                 // 提交表单
-                $('#id_DeleteDevBtn{{ each_device.id }}').on('click', function () {
+                $('#id_DeleteContBtn{{ each_device.id }}').on('click', function () {
                     $.ajax({
                         cache: false,
                         type: "POST",
                         url: "{% url 'sys_inspect:inspect_device_delete' %}",
-                        data: $('#id_DeleteDevForm{{ each_device.id }}').serialize(),
+                        data: $('#id_DeleteContForm{{ each_device.id }}').serialize(),
                         async: true,
                         beforeSend: function (xhr, settings) {
                             xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");

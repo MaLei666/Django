@@ -136,7 +136,7 @@ class EditDevInfoView(LoginStatusCheck, View):
 
 
 ######################################
-# 删除平台
+# 删除设备
 ######################################
 class DeleteDevView(LoginStatusCheck, View):
     def post(self, request):
@@ -169,7 +169,7 @@ class ContentViews(LoginStatusCheck, View):
         web_chose_left_2 = 'contents'
         web_chose_middle = ''
 
-        title = '巡检内容'
+        title = '任务列表'
 
         contents = InspectContentInfo.objects.filter(status=1)
 
@@ -197,4 +197,57 @@ class ContentViews(LoginStatusCheck, View):
         }
         return render(request, 'sys_inspect/inspect_content_list.html', context=context)
 
+######################################
+# 添加任务
+######################################
+class AddContView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            add_cont_form = AddContForm(request.POST)
+            if add_cont_form.is_valid():
+                content = InspectContentInfo()
+                content.task_name = request.POST.get('task_name')
+                content.task_type = request.POST.get('task_type')
+                content.start_time = request.POST.get('start_time')
+                content.end_time = request.POST.get('end_time')
+                content.save()
+
+                # 添加操作记录
+                op_record = UserOperationRecord()
+                op_record.op_user = request.user
+                op_record.belong = 5
+                op_record.status = 1
+                op_record.op_num = content.id
+                op_record.operation = 1
+                op_record.action = "添加巡检任务：%s" % (content.task_name)
+                op_record.save()
+                return HttpResponse('{"status":"success", "msg":"巡检任务添加成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"巡检任务填写错误，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 删除任务
+######################################
+class DeleteContView(LoginStatusCheck, View):
+    def post(self, request):
+        try:
+            dev_id = request.POST.get('dev_id')
+            device = InspectDevInfo.objects.get(id=int(dev_id))
+
+            # 添加操作记录
+            op_record = UserOperationRecord()
+            op_record.op_user = request.user
+            op_record.belong = 5
+            op_record.status = 1
+            op_record.op_num = device.id
+            op_record.operation = 4
+            op_record.action = "删除巡检设备设备：%s：%s" % (device.dev_id,device.dev_name)
+            op_record.save()
+            device.delete()
+            return HttpResponse('{"status":"success", "msg":"巡检设备删除成功！"}', content_type='application/json')
+        except Exception as e:
+            return HttpResponse('{"status":"falied", "msg":"巡检设备删除失败！"}', content_type='application/json')
 
