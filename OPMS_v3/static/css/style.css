@@ -163,6 +163,7 @@
     height: calc((100vh - 325px) / 2);
 }
 
+.selectwidth140 { font-size: 12px!important; width: 140px!important; }
 
 
 

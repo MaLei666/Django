@@ -12,7 +12,7 @@ import datetime
 ######################################
 # 自定义模块
 ######################################
-from users.models import UserProfile
+from users.models import UserProfile,UserDepartment,UserCompany
 
 
 ######################################

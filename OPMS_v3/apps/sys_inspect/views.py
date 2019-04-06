@@ -26,7 +26,6 @@ from .forms import *
 from .models import *
 from operation_record.models import UserOperationRecord
 
-
 ######################################
 # 巡检设备列表
 ######################################
@@ -40,6 +39,11 @@ class InspectDevInfoViews(LoginStatusCheck, View):
         title = '设备列表'
 
         devices = InspectDevInfo.objects.filter(status=1)
+        # 用户
+        users = UserProfile.objects.filter(status=1)
+
+        #部门
+        depts=UserDepartment.objects.filter()
 
         devices_nums = devices.count()
 
@@ -61,7 +65,9 @@ class InspectDevInfoViews(LoginStatusCheck, View):
             'web_chose_middle': web_chose_middle,
             'title': title,
             'devices': devices,
+            'depts':depts,
             'devices_nums': devices_nums,
+            'users':users
         }
         return render(request, 'sys_inspect/inspect_dev_list.html', context=context)
 
@@ -170,6 +176,17 @@ class ContentViews(LoginStatusCheck, View):
         web_chose_middle = ''
 
         title = '任务列表'
+        # 用户
+        users = UserProfile.objects.filter(status=1)
+
+        # 部门
+        depts = UserDepartment.objects.filter()
+
+        #公司
+        company=UserCompany.objects.filter()
+
+        #设备
+        devices=InspectDevInfo.objects.filter(status=1)
 
         contents = InspectContentInfo.objects.filter(status=1)
 
@@ -194,6 +211,10 @@ class ContentViews(LoginStatusCheck, View):
             'title': title,
             'contents': contents,
             'contents_nums': contents_nums,
+            'depts': depts,
+            'users': users,
+            'company':company,
+            'devices':devices
         }
         return render(request, 'sys_inspect/inspect_content_list.html', context=context)
 
