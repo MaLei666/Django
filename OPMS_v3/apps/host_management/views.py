@@ -1852,6 +1852,7 @@ class AddDictView(LoginStatusCheck, View):
                 dict_info.name = name
                 dict_info.value = value
                 dict_info.remarks = request.POST.get('remarks', '')
+                dict_info.create_by=request.user.id
                 dict_info.save()
 
                 # 添加操作记录
@@ -1872,41 +1873,39 @@ class AddDictView(LoginStatusCheck, View):
 
 
 ######################################
-# 修改域名解析
+# 修改数据字典
 ######################################
 class EditDictView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
-            domain_info = DomainNameResolveInfo.objects.get(id=int(request.POST.get('do_id')))
+            dict_info = DataDictInfo.objects.get(id=request.POST.get('id'))
 
             name = request.POST.get('name')
-            domain_name_id = int(request.POST.get('domain_name'))
+            value = request.POST.get('value')
 
-            if (domain_info.name != name) and (domain_info.domain_name_id != domain_name_id):
-                if DomainNameResolveInfo.objects.filter(name=name).filter(domain_name_id=domain_name_id).filter(status=1):
-                    return HttpResponse('{"status":"failed", "msg":"该记录已存在，请检查！"}', content_type='application/json')
+            if (dict_info.name != name) and (dict_info.value != value):
+                if DataDictInfo.objects.filter(name=name).filter(value=value):
+                    return HttpResponse('{"status":"failed", "msg":"该数据已存在，请检查！"}', content_type='application/json')
 
-            edit_domain_reslove_form = EditDomainNameResolveForm(request.POST)
+            edit_dict_form = EditDictForm(request.POST)
 
-            if edit_domain_reslove_form.is_valid():
-                domain_info.name = name
-                domain_info.domain_name_id = domain_name_id
-                domain_info.ip = request.POST.get('ip')
-                domain_info.desc = request.POST.get('desc', '')
-                domain_info.update_user = request.user
-                domain_info.save()
+            if edit_dict_form.is_valid():
+                dict_info.name = name
+                dict_info.value = value
+                dict_info.remarks = request.POST.get('remarks')
+                dict_info.save()
 
                 # 添加操作记录
                 op_record = UserOperationRecord()
                 op_record.op_user = request.user
-                op_record.belong = 1
+                op_record.belong = 6
                 op_record.status = 1
-                op_record.op_num = domain_info.id
+                op_record.op_num = dict_info.id
                 op_record.operation = 2
-                op_record.action = "修改域名解析：%s.%s" % (domain_info.name, domain_info.domain_name.name)
+                op_record.action = "修改数据字典：%s.%s" % (dict_info.name, dict_info.value)
                 op_record.save()
 
-                return HttpResponse('{"status":"success", "msg":"修改域名解析成功！"}', content_type='application/json')
+                return HttpResponse('{"status":"success", "msg":"修改数据字典成功！"}', content_type='application/json')
             else:
                 return HttpResponse('{"status":"failed", "msg":"填写不合法，请检查！"}', content_type='application/json')
         else:
@@ -1914,7 +1913,7 @@ class EditDictView(LoginStatusCheck, View):
 
 
 ######################################
-# 删除域名解析
+# 删除数据字典
 ######################################
 class DeleteDictView(LoginStatusCheck, View):
     def post(self, request):
