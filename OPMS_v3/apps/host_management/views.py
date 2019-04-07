@@ -1792,6 +1792,149 @@ class HostOperationView(LoginStatusCheck, View):
 
 
 
+######################################
+# 数据字典列表
+######################################
+class DictListView(LoginStatusCheck, View):
+    def get(self, request):
+        if request.user.role > 1:
+            # 页面选择
+            web_chose_left_1 = 'basic_setting'
+            web_chose_left_2 = 'dict'
+            web_chose_middle = ''
+
+            dicts = DataDictInfo.objects.filter()
+
+            # 数量
+            record_nums = dicts.count()
+
+            # 判断页码
+            try:
+                page = request.GET.get('page', 1)
+            except PageNotAnInteger:
+                page = 1
+
+            # 对取到的数据进行分页，记得定义每页的数量
+            p = Paginator(dicts, 16, request=request)
+
+            # 分页处理后的 QuerySet
+            dicts = p.page(page)
+
+
+            context = {
+                'web_chose_left_1': web_chose_left_1,
+                'web_chose_left_2': web_chose_left_2,
+                'web_chose_middle': web_chose_middle,
+                'dicts': dicts,
+                'record_nums': record_nums,
+            }
+            return render(request, 'host_management/other/data_dict_list.html', context=context)
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 添加数据字典
+######################################
+class AddDictView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            name = request.POST.get('name')
+            value = request.POST.get('value')
+
+            if DataDictInfo.objects.filter(name=name).filter(value=value):
+                return HttpResponse('{"status":"failed", "msg":"该记录已存在，请检查！"}', content_type='application/json')
+
+            add_dict_form = AddDictForm(request.POST)
+
+            if add_dict_form.is_valid():
+                dict_info = DataDictInfo()
+                dict_info.name = name
+                dict_info.value = value
+                dict_info.remarks = request.POST.get('remarks', '')
+                dict_info.save()
+
+                # 添加操作记录
+                op_record = UserOperationRecord()
+                op_record.op_user = request.user
+                op_record.belong = 6
+                op_record.status = 1
+                op_record.op_num = dict_info.id
+                op_record.operation = 1
+                op_record.action = "添加数据字典：%s" % (dict_info.name)
+                op_record.save()
+
+                return HttpResponse('{"status":"success", "msg":"添加域名解析成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"填写不合法，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 修改域名解析
+######################################
+class EditDictView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            domain_info = DomainNameResolveInfo.objects.get(id=int(request.POST.get('do_id')))
+
+            name = request.POST.get('name')
+            domain_name_id = int(request.POST.get('domain_name'))
+
+            if (domain_info.name != name) and (domain_info.domain_name_id != domain_name_id):
+                if DomainNameResolveInfo.objects.filter(name=name).filter(domain_name_id=domain_name_id).filter(status=1):
+                    return HttpResponse('{"status":"failed", "msg":"该记录已存在，请检查！"}', content_type='application/json')
+
+            edit_domain_reslove_form = EditDomainNameResolveForm(request.POST)
+
+            if edit_domain_reslove_form.is_valid():
+                domain_info.name = name
+                domain_info.domain_name_id = domain_name_id
+                domain_info.ip = request.POST.get('ip')
+                domain_info.desc = request.POST.get('desc', '')
+                domain_info.update_user = request.user
+                domain_info.save()
+
+                # 添加操作记录
+                op_record = UserOperationRecord()
+                op_record.op_user = request.user
+                op_record.belong = 1
+                op_record.status = 1
+                op_record.op_num = domain_info.id
+                op_record.operation = 2
+                op_record.action = "修改域名解析：%s.%s" % (domain_info.name, domain_info.domain_name.name)
+                op_record.save()
+
+                return HttpResponse('{"status":"success", "msg":"修改域名解析成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"填写不合法，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 删除域名解析
+######################################
+class DeleteDictView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            domain_info = DomainNameResolveInfo.objects.get(id=int(request.POST.get('do_id')))
+
+            # 添加操作记录
+            op_record = UserOperationRecord()
+            op_record.op_user = request.user
+            op_record.belong = 1
+            op_record.status = 1
+            op_record.op_num = domain_info.id
+            op_record.operation = 4
+            op_record.action = "停用域名解析：%s.%s" % (domain_info.name, domain_info.domain_name.name)
+            op_record.save()
+            domain_info.delete()
+
+            return HttpResponse('{"status":"success", "msg":"停用域名成功！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
 
 
 

@@ -302,10 +302,10 @@ function save() {
     构建设备devids
     */
     var rows = $('#exampleTable').bootstrapTable('getSelections');
-    if (rows.length == 0) {
-        layer.msg("新建任务至少包含一个巡检设备");
-        return;
-    }
+    // if (rows.length == 0) {
+    //     layer.msg("新建任务至少包含一个巡检设备");
+    //     return;
+    // }
 
     var name3 = '';
     var dids = new Array();

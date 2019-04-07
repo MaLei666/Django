@@ -286,4 +286,26 @@ class DomainNameResolveInfo(models.Model):
     def __str__(self):
         return '%s.%s' % (self.name, self.domain_name)
 
+######################################
+# 数据字典表
+######################################
+class DataDictInfo(models.Model):
+    name =models.CharField(max_length=100,verbose_name='标签名',null=True,blank=True)
+    value =models.CharField(max_length=100,verbose_name='数据值',null=True,blank=True)
+    type =models.CharField(max_length=100,verbose_name='',null=True,blank=True)
+    description =models.CharField(max_length=100,verbose_name='类型',null=True,blank=True)
+    sort =models.DecimalField(max_digits=10,decimal_places=0,verbose_name='排序（升序)',null=True,blank=True)
+    parent_id =models.BigIntegerField(null=True,blank=True,verbose_name='父级编号')
+    create_by =models.IntegerField(null=True,blank=True,verbose_name='创建者')
+    create_date =models.DateTimeField(auto_now=True,verbose_name='创建时间')
+    update_by =models.BigIntegerField(null=True,blank=True,verbose_name='更新者')
+    update_date =models.DateTimeField(blank=True,null=True,verbose_name='更新时间')
+    remarks =models.CharField(max_length=255,verbose_name='备注信息',null=True,blank=True)
+    del_flag =models.CharField(max_length=1,verbose_name='删除标记',null=True,blank=True)
 
+    class Meta:
+        verbose_name = '数据字典表'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return '%s.%s' % (self.name,self.value)

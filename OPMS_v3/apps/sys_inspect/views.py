@@ -38,12 +38,15 @@ class InspectDevInfoViews(LoginStatusCheck, View):
 
         title = '设备列表'
 
-        devices = InspectDevInfo.objects.filter(status=1)
+        devices = InspectDevInfo.objects.filter()
         # 用户
-        users = UserProfile.objects.filter(status=1)
+        users = UserProfile.objects.filter()
 
         #部门
         depts=UserDepartment.objects.filter()
+
+        # 公司
+        company = UserCompany.objects.filter()
 
         devices_nums = devices.count()
 
@@ -67,7 +70,8 @@ class InspectDevInfoViews(LoginStatusCheck, View):
             'devices': devices,
             'depts':depts,
             'devices_nums': devices_nums,
-            'users':users
+            'users':users,
+            'company': company
         }
         return render(request, 'sys_inspect/inspect_dev_list.html', context=context)
 
@@ -76,20 +80,24 @@ class InspectDevInfoViews(LoginStatusCheck, View):
 ######################################
 class AddDevView(LoginStatusCheck, View):
     def post(self, request):
+
         if request.user.role > 1:
             add_dev_form = AddDevForm(request.POST)
             if add_dev_form.is_valid():
                 dev_id = request.POST.get('dev_id')
 
-                if InspectDevInfo.objects.filter(dev_id=dev_id).filter(status=1):
+                if InspectDevInfo.objects.filter(dev_id=dev_id).filter():
                     return HttpResponse('{"status":"failed", "msg":"该设备id已经存在，请检查！"}',
                                         content_type='application/json')
 
                 device = InspectDevInfo()
-                device.dev_id = request.POST.get('dev_id')
+                device.unit_id = request.POST.get('unit_id')
+                device.unit_name=UserCompany.objects.get(id=request.POST.get('unit_id'))
+                device.dev_id = dev_id
                 device.dev_name = request.POST.get('dev_name')
                 device.install_position = request.POST.get('install_position')
                 device.comment = request.POST.get('comment')
+
 
                 device.save()
 
@@ -118,10 +126,11 @@ class EditDevInfoView(LoginStatusCheck, View):
             if edit_dev_info_form.is_valid():
 
                 # 获取设备
-                device = InspectDevInfo.objects.get(id=request.POST.get('dev_id'))
+                device = InspectDevInfo.objects.get(dev_id=request.POST.get('dev_id'))
                 device.dev_name = request.POST.get('dev_name')
                 device.install_position = request.POST.get('install_position')
                 device.comment = request.POST.get('comment')
+                device.status= request.POST.get('status')
                 device.save()
 
                 # 添加操作记录
@@ -177,7 +186,7 @@ class ContentViews(LoginStatusCheck, View):
 
         title = '任务列表'
         # 用户
-        users = UserProfile.objects.filter(status=1)
+        users = UserProfile.objects.filter()
 
         # 部门
         depts = UserDepartment.objects.filter()
@@ -186,9 +195,9 @@ class ContentViews(LoginStatusCheck, View):
         company=UserCompany.objects.filter()
 
         #设备
-        devices=InspectDevInfo.objects.filter(status=1)
+        devices=InspectDevInfo.objects.filter()
 
-        contents = InspectContentInfo.objects.filter(status=1)
+        contents = InspectContentInfo.objects.filter()
 
         contents_nums = contents.count()
 
@@ -199,7 +208,7 @@ class ContentViews(LoginStatusCheck, View):
             page = 1
 
         # 对取到的数据进行分页，记得定义每页的数量
-        p = Paginator(contents, 17, request=request)
+        p = Paginator(contents, 20, request=request)
 
         # 分页处理后的 QuerySet
         contents = p.page(page)
@@ -228,7 +237,7 @@ class AddContView(LoginStatusCheck, View):
             if add_cont_form.is_valid():
                 content = InspectContentInfo()
                 content.task_name = request.POST.get('task_name')
-                content.task_type = request.POST.get('task_type')
+                content.task_type = request.POST.get('taskType')
                 content.start_time = request.POST.get('start_time')
                 content.end_time = request.POST.get('end_time')
                 content.save()

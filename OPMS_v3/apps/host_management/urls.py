@@ -144,6 +144,18 @@ urlpatterns = [
     # 删除域名解析
     path('domainname/resolve/delete', DeleteDomainNameResolveView.as_view(), name='domain_resolve_del'),
 
+    #数据字典
+    path('dict/list', DictListView.as_view(), name='dict_list'),
+
+    #添加数据字典
+    path('dict/add', AddDictView.as_view(), name='add_dict'),
+
+    #修改数据字典
+    path('dict/edit', EditDictView.as_view(), name='edit_dict'),
+
+    #删除数据字典
+    path('dict/delete', DeleteDictView.as_view(), name='delete_dict'),
+
 ]
 
 

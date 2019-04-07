@@ -235,18 +235,6 @@
                                                 <span>产品</span>
                                             </a>
                                         </li>
-
-{#                                        <li {% ifequal web_chose_left_2 'domain_name' %}class="active"{% endifequal %}>#}
-{#                                            <a href="{% url 'host_management:domain_name_list' %}">#}
-{#                                                <span>域名管理</span>#}
-{#                                            </a>#}
-{#                                        </li>#}
-{##}
-{#                                        <li {% ifequal web_chose_left_2 'domain_resolve' %}class="active"{% endifequal %}>#}
-{#                                            <a href="{% url 'host_management:domain_resolve_list' %}">#}
-{#                                                <span>域名解析</span>#}
-{#                                            </a>#}
-{#                                        </li>#}
                                     </ul>
                                 </li>
                             {% endif %}
@@ -329,6 +317,11 @@
                                             <li {% ifequal web_chose_left_2 'use' %}class="active"{% endifequal %}>
                                                 <a href="{% url 'host_management:use_List' %}">
                                                     <span>用途配置</span>
+                                                </a>
+                                            </li>
+                                            <li {% ifequal web_chose_left_2 'dict' %}class="active"{% endifequal %}>
+                                                <a href="{% url 'host_management:dict_list' %}">
+                                                    <span>数据字典</span>
                                                 </a>
                                             </li>
                                         </ul>

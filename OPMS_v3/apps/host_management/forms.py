@@ -216,3 +216,18 @@ class AddDomainNameResolveForm(forms.Form):
 class EditDomainNameResolveForm(forms.Form):
     name = forms.CharField(max_length=20, required=True)
     ip = forms.GenericIPAddressField(required=True)
+
+######################################
+# 添加数据字典
+######################################
+class AddDictForm(forms.Form):
+    name = forms.CharField(max_length=200, required=True)
+    value=forms.CharField(max_length=200,required=True)
+
+
+######################################
+# 修改数据字典
+######################################
+class EditDictForm(forms.Form):
+    name = forms.CharField(max_length=200, required=True)
+    value = forms.CharField(max_length=200, required=True)

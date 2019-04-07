@@ -185,6 +185,9 @@ a:hover .caret-white {
 .form-control {
   border-color: #cfdadd;
   border-radius: 2px;
+  font-size: 12px;
+  height: 30px;
+  width: 98%;
 }
 
 .form-control,
@@ -1786,8 +1789,8 @@ fieldset[disabled] .btn-default.active {
 
 .btn-primary {
   color: #ffffff !important;
-  background-color: #7266ba;
-  border-color: #7266ba;
+  background-color: #5FB878;
+  border-color: #5FB878;
 }
 
 .btn-primary:hover,
@@ -1796,8 +1799,8 @@ fieldset[disabled] .btn-default.active {
 .btn-primary.active,
 .open .dropdown-toggle.btn-primary {
   color: #ffffff !important;
-  background-color: #6254b2;
-  border-color: #5a4daa;
+  background-color: #5FB878;
+  border-color: #5FB878;
 }
 
 .btn-primary:active,
@@ -1827,8 +1830,8 @@ fieldset[disabled] .btn-primary.active {
 
 .btn-success {
   color: #ffffff !important;
-  background-color: #27c24c;
-  border-color: #27c24c;
+  background-color: #005fd7;
+  border-color: #005fd7;
 }
 
 .btn-success:hover,
@@ -1837,8 +1840,8 @@ fieldset[disabled] .btn-primary.active {
 .btn-success.active,
 .open .dropdown-toggle.btn-success {
   color: #ffffff !important;
-  background-color: #23ad44;
-  border-color: #20a03f;
+  background-color: #005fd7;
+  border-color: #005fd7;
 }
 
 .btn-success:active,
@@ -1862,8 +1865,8 @@ fieldset[disabled] .btn-success:active,
 .btn-success.disabled.active,
 .btn-success[disabled].active,
 fieldset[disabled] .btn-success.active {
-  background-color: #27c24c;
-  border-color: #27c24c;
+  background-color: #005fd7;
+  border-color: #005fd7;
 }
 
 .btn-info {
