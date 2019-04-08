@@ -25,6 +25,7 @@ from utils.login_check import LoginStatusCheck
 from .forms import *
 from .models import *
 from operation_record.models import UserOperationRecord
+from host_management.models import DataDictInfo
 
 ######################################
 # 巡检设备列表
@@ -42,11 +43,14 @@ class InspectDevInfoViews(LoginStatusCheck, View):
         # 用户
         users = UserProfile.objects.filter()
 
-        #部门
+        # 部门
         depts=UserDepartment.objects.filter()
 
         # 公司
         company = UserCompany.objects.filter()
+
+        # 数据字典
+        dicts=DataDictInfo.objects.filter()
 
         devices_nums = devices.count()
 
@@ -71,7 +75,8 @@ class InspectDevInfoViews(LoginStatusCheck, View):
             'depts':depts,
             'devices_nums': devices_nums,
             'users':users,
-            'company': company
+            'company': company,
+            'dicts':dicts
         }
         return render(request, 'sys_inspect/inspect_dev_list.html', context=context)
 
@@ -95,10 +100,12 @@ class AddDevView(LoginStatusCheck, View):
                 device.unit_name=UserCompany.objects.get(id=request.POST.get('unit_id'))
                 device.dev_id = dev_id
                 device.dev_name = request.POST.get('dev_name')
+                device.dev_type=request.POST.get('dev_type')
                 device.install_position = request.POST.get('install_position')
                 device.comment = request.POST.get('comment')
-
-
+                device.create_mobile=request.user.mobile
+                device.create_user=request.user.id
+                device.create_time=datetime.datetime.now()
                 device.save()
 
                 # 添加操作记录
@@ -126,11 +133,14 @@ class EditDevInfoView(LoginStatusCheck, View):
             if edit_dev_info_form.is_valid():
 
                 # 获取设备
-                device = InspectDevInfo.objects.get(dev_id=request.POST.get('dev_id'))
+                device = InspectDevInfo.objects.get(id=request.POST.get('id'))
                 device.dev_name = request.POST.get('dev_name')
                 device.install_position = request.POST.get('install_position')
                 device.comment = request.POST.get('comment')
                 device.status= request.POST.get('status')
+                device.update_user=request.user.id
+                device.update_time=datetime.datetime.now()
+
                 device.save()
 
                 # 添加操作记录
@@ -156,8 +166,7 @@ class EditDevInfoView(LoginStatusCheck, View):
 class DeleteDevView(LoginStatusCheck, View):
     def post(self, request):
         try:
-            dev_id = request.POST.get('dev_id')
-            device = InspectDevInfo.objects.get(id=int(dev_id))
+            device = InspectDevInfo.objects.get(id=request.POST.get('id'))
 
             # 添加操作记录
             op_record = UserOperationRecord()

@@ -1878,8 +1878,7 @@ class AddDictView(LoginStatusCheck, View):
 class EditDictView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
-            dict_info = DataDictInfo.objects.get(id=request.POST.get('id'))
-
+            dict_info = DataDictInfo.objects.get(name=request.POST.get('name'))
             name = request.POST.get('name')
             value = request.POST.get('value')
 
@@ -1918,20 +1917,20 @@ class EditDictView(LoginStatusCheck, View):
 class DeleteDictView(LoginStatusCheck, View):
     def post(self, request):
         if request.user.role > 1:
-            domain_info = DomainNameResolveInfo.objects.get(id=int(request.POST.get('do_id')))
+            dict_info = DataDictInfo.objects.get(id=int(request.POST.get('id')))
 
             # 添加操作记录
             op_record = UserOperationRecord()
             op_record.op_user = request.user
-            op_record.belong = 1
+            op_record.belong = 6
             op_record.status = 1
-            op_record.op_num = domain_info.id
+            op_record.op_num = dict_info.id
             op_record.operation = 4
-            op_record.action = "停用域名解析：%s.%s" % (domain_info.name, domain_info.domain_name.name)
+            op_record.action = "删除数据字典：%s.%s" % (dict_info.name, dict_info.value)
             op_record.save()
-            domain_info.delete()
+            dict_info.delete()
 
-            return HttpResponse('{"status":"success", "msg":"停用域名成功！"}', content_type='application/json')
+            return HttpResponse('{"status":"success", "msg":"删除数据字典成功！"}', content_type='application/json')
         else:
             return HttpResponse(status=403)
 
