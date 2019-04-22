@@ -38,43 +38,6 @@ function unitSelect() {
     }
 }
 
-function unitSelect() {
-    //var dSel = document.getElementById("deptId");
-    //var dept = dSel.options[dSel.selectedIndex].value;
-    var nSel = document.getElementById("unitId");
-    var unit = nSel.options[nSel.selectedIndex].value;
-    var uSel = document.getElementById("userId");
-    uSel.options.length = 0;
-    if( unit != null && unit != '') {
-        $.ajax({
-            cache : false,
-            type : "GET",
-            url : "/mobile/mobileUser/inspect",
-            data : {
-                'unitId': unit
-            },
-            async : false,
-            error : function(request) {
-                parent.layer.alert("Connection error");
-            },
-            success : function( resp ) {
-                var json = JSON.stringify(resp);
-                var array = jQuery.parseJSON(json);
-                if ( array.length <= 0 ) {
-                    uSel.options.add(new Option( "请选择...", ''));
-                } else {
-                    uSel.options.add(new Option( "请选择...", ''));
-                    $.each(array, function (index, data) {
-                        uSel.options.add(new Option( data.realName, data.mobileId));
-                    });
-                }
-            }
-        });
-    } else {
-        uSel.options.add(new Option( "请选择...",""));
-    }
-}
-
 function getDateSelect() {
     var BdefDate = new Date().Format("yyyy-MM") + "-01";
     var EdefDate = new Date().Format("yyyy-MM-dd");

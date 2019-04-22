@@ -219,7 +219,7 @@
 
 										<td style="width:10%; text-align:center;">单位名称:</td>
 										<td>
-                                        <select name="unitId" id="unitId" class="form-control" style="height: 30px;width: 98%;font-size: 12px">
+                                        <select name="unitId" id="unitId" class="form-control" style="height: 30px;width: 98%;font-size: 12px" >
                                             <option value="">请选择...</option>
                                             {% for each_company in company %}
                                                 <option value="{{ each_company.id }}">{{ each_company.name }}</option>
@@ -274,12 +274,12 @@
 									</tr>
 
 
-{#									<tr>#}
-{#										<td colspan="6">#}
-{#											<input id="name3" name="name3" type="hidden">#}
-{#											<table id="exampleTable" data-mobile-responsive="true"></table>#}
-{#										</td>#}
-{#									</tr>#}
+									<tr>
+										<td colspan="6">
+											<input id="name3" name="name3" type="hidden">
+											<table id="exampleTable" data-mobile-responsive="true"></table>
+										</td>
+									</tr>
 								</table>
 								</form>
 							</div>
@@ -296,6 +296,8 @@
 <script src="{% static 'plugins/layer/layer.js' %}"></script>
 <script src="{% static 'plugins/layer/layer.min.js' %}"></script>
 <script src="{% static 'js/inspect/inspectContent/inspectContent.js' %}"></script>
+<script src="{% static 'js/inspect/inspectContent/add.js' %}"></script>
+
 
 
 {#    <div class="modal inmodal" id="AddContModal" tabindex="-1"     role="dialog" aria-hidden="true"#}

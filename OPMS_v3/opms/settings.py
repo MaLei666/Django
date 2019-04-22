@@ -123,7 +123,7 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'zkyr1006',
         # 'HOST': '192.168.1.137',
-        'HOST':'127.0.0.1',
+        'HOST':'58.132.209.229',
         'PORT': '3306',
     }
 }

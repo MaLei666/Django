@@ -150,7 +150,7 @@ class EditDevInfoView(LoginStatusCheck, View):
                 op_record.status = 1
                 op_record.op_num = device.id
                 op_record.operation = 2
-                op_record.action = "修改巡检设备：%s" % device.dev_id
+                op_record.action = "修改巡检设备：%s:%s" % (device.dev_id,device.dev_name)
                 op_record.save()
 
                 return HttpResponse('{"status":"success", "msg":"巡检设备信息修改成功！"}', content_type='application/json')
@@ -245,10 +245,15 @@ class AddContView(LoginStatusCheck, View):
             add_cont_form = AddContForm(request.POST)
             if add_cont_form.is_valid():
                 content = InspectContentInfo()
-                content.task_name = request.POST.get('task_name')
+                content.task_name = request.POST.get('taskName')
                 content.task_type = request.POST.get('taskType')
-                content.start_time = request.POST.get('start_time')
-                content.end_time = request.POST.get('end_time')
+                content.dept_id= request.POST.get('deptId')
+                content.unit_id=request.POST.get('unitId')
+                content.user_id=request.POST.get('userId')
+
+
+                content.start_time = request.POST.get('startTime')
+                content.end_time = request.POST.get('endTime')
                 content.save()
 
                 # 添加操作记录
