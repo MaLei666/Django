@@ -7,7 +7,7 @@ from django import forms
 ######################################
 # 自定义模块
 ######################################
-from .models import *
+from .forms import *
 
 
 ######################################
@@ -45,6 +45,43 @@ class ChangeUserPasswordForm(forms.Form):
     new_password = forms.CharField(min_length=6, max_length=20, required=True)
     renew_password = forms.CharField(min_length=6, max_length=20, required=True)
 
+######################################
+# 添加单位表单
+######################################
+class AddUnitForm(forms.Form):
+    name = forms.CharField(max_length=30,required=True)
+    connect = forms.CharField(max_length=30)
+    connect_phone = forms.CharField(max_length=30)
+    comment = forms.CharField( max_length=200)
+    address = forms.CharField( max_length=50)
+
+######################################
+# 修改单位表单
+######################################
+class EditUnitForm(forms.Form):
+    name = forms.CharField(max_length=30,required=True)
+    connect = forms.CharField(max_length=30)
+    connect_phone = forms.CharField(max_length=30)
+    comment = forms.CharField( max_length=200)
+    address = forms.CharField( max_length=50)
+
+######################################
+# 添加部门表单
+######################################
+class AddDeptForm(forms.Form):
+    name = forms.CharField(max_length=20,required=True)
+    connect = forms.CharField(max_length=30)
+    connect_phone = forms.CharField( max_length=30)
+    comment = forms.CharField(blank=True, null=True, max_length=1000)
+
+######################################
+# 修改部门表单
+######################################
+class EditDeptForm(forms.Form):
+    name = forms.CharField(max_length=20,required=True)
+    connect = forms.CharField(max_length=30)
+    connect_phone = forms.CharField( max_length=30)
+    comment = forms.CharField(blank=True, null=True, max_length=1000)
 
 ######################################
 # 添加用户表单

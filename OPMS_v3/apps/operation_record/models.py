@@ -7,7 +7,7 @@ from users.models import UserProfile
 ######################################
 class UserOperationRecord(models.Model):
     op_user = models.ForeignKey(UserProfile, verbose_name='操作用户', related_name='host_op_record_user', on_delete=models.CASCADE)
-    belong = models.PositiveSmallIntegerField(verbose_name='归属', choices=((1, '主机管理'), (2, '用户管理'), (3, '用户认证'), (4, '文档管理'),((5, '巡检监督'),(6,'数据字典'))))
+    belong = models.PositiveSmallIntegerField(verbose_name='归属', choices=((1, '主机管理'), (2, '系统管理'), (3, '用户认证'), (4, '文档管理'),((5, '巡检监督'),(6,'数据字典'))))
     operation = models.PositiveSmallIntegerField(verbose_name='操作', choices=((1, '添加'), (2, '修改'), (3, '启用'), (4, '停用'), (5, '登录'), (6, '退出')))
     op_num = models.IntegerField(verbose_name='被操作项目ID')
     action = models.CharField(verbose_name='操作详情', max_length=100)

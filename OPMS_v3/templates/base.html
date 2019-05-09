@@ -446,22 +446,33 @@
                                     <i class="pull-right fa fa-angle-right" style="width: 5px;font-weight: bolder;"
                                        id="coll_tag_doc"></i>
                                     <i class="fa fa-users"></i>
-                                    <span style="font-size: 13px; ">用户管理</span>
+                                    <span style="font-size: 13px; ">系统管理</span>
                                 </a>
 
                                 <!-- 二级菜单 -->
                                 <ul class="nav nav-sub dk" style="font-size: 12px;">
+                                    <li {% ifequal web_chose_left_2 'user_list' %}class="active"{% endifequal %}>
+                                        <a href="{% url 'users:unit_list' %}">
+                                            <span>单位管理</span>
+                                        </a>
+                                    </li>
+                                    <li {% ifequal web_chose_left_2 'user_list' %}class="active"{% endifequal %}>
+                                        <a href="{% url 'users:dept_list' %}">
+                                            <span>部门管理</span>
+                                        </a>
+                                    </li>
                                     <li {% ifequal web_chose_left_2 'user_info' %}class="active"{% endifequal %}>
                                         <a href="{% url 'users:user_info' %}">
-                                            <span>用户资料</span>
+                                            <span>人员管理</span>
                                         </a>
                                     </li>
 
-                                    <li {% ifequal web_chose_left_2 'user_list' %}class="active"{% endifequal %}>
-                                        <a href="{% url 'users:user_list' %}">
-                                            <span>用户列表</span>
-                                        </a>
-                                    </li>
+{#                                    <li {% ifequal web_chose_left_2 'user_list' %}class="active"{% endifequal %}>#}
+{#                                        <a href="{% url 'users:user_list' %}">#}
+{#                                            <span>用户列表</span>#}
+{#                                        </a>#}
+{#                                    </li>#}
+
                                 </ul>
                             </li>
 

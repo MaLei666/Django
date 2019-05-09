@@ -13,17 +13,21 @@ import datetime
 
 
 ######################################
-# 公司表
+# 单位表
 ######################################
 class UserCompany(models.Model):
-    name = models.CharField(verbose_name='公司名称', max_length=30)
-    leader = models.CharField(verbose_name='管理人', max_length=10)
-    desc = models.CharField(verbose_name='描述', max_length=200, blank=True, null=True)
+    name = models.CharField(verbose_name='单位名称', max_length=30)
+    connect = models.CharField(verbose_name='联系人', max_length=30, blank=True, null=True)
+    connect_phone=models.CharField(verbose_name='联系电话',max_length=30, blank=True, null=True)
     address = models.CharField(verbose_name='地址', max_length=50, blank=True, null=True)
-    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    create_user=models.CharField(verbose_name='创建者',max_length=45)
+    create_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user=models.CharField(verbose_name='更新者',max_length=45,blank=True,null=True)
+    update_time=models.DateTimeField(verbose_name='更新时间',blank=True,null=True)
+    comment=models.CharField(verbose_name='备注',blank=True,null=True,max_length=1000)
 
     class Meta:
-        verbose_name = '公司'
+        verbose_name = '单位'
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -36,9 +40,13 @@ class UserCompany(models.Model):
 class UserDepartment(models.Model):
     name = models.CharField(verbose_name='部门名称', max_length=20)
     company = models.ForeignKey(UserCompany, verbose_name='公司', on_delete=models.CASCADE)
-    leader = models.CharField(verbose_name='主管人', max_length=10)
-    desc = models.CharField(verbose_name='描述', max_length=200, blank=True, null=True)
-    add_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    connect = models.CharField(verbose_name='联系人', max_length=30, blank=True, null=True)
+    connect_phone = models.CharField(verbose_name='联系电话', max_length=30, blank=True, null=True)
+    create_user = models.CharField(verbose_name='创建者', max_length=45)
+    create_time = models.DateTimeField(verbose_name='添加时间', auto_now_add=True)
+    update_user = models.CharField(verbose_name='更新者', max_length=45, blank=True, null=True)
+    update_time = models.DateTimeField(verbose_name='更新时间', blank=True, null=True)
+    comment = models.CharField(verbose_name='备注', blank=True, null=True, max_length=1000)
 
     class Meta:
         verbose_name = '部门'

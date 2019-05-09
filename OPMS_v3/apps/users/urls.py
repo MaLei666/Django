@@ -17,6 +17,24 @@ urlpatterns = [
     # 登出
     path('logout', LogoutView.as_view(), name='logout'),
 
+    # 单位列表
+    path('unit/list', UnitListView.as_view(), name='unit_list'),
+    # 单位添加
+    path('unit/add', LogoutView.as_view(), name='unit_add'),
+    # 单位修改
+    path('unit/edit', LogoutView.as_view(), name='unit_edit'),
+    # 单位删除
+    path('unit/delete', LogoutView.as_view(), name='unit_delete'),
+
+    # 部门列表
+    path('dept/list', LogoutView.as_view(), name='dept_list'),
+    # 部门添加
+    path('dept/add', LogoutView.as_view(), name='dept_add'),
+    # 部门修改
+    path('dept/edit', LogoutView.as_view(), name='dept_edit'),
+    # 部门删除
+    path('dept/delete', LogoutView.as_view(), name='dept_delete'),
+
     # # 用户激活请求
     # path('email/active', SendActiveUserEmailView.as_view(), name='send_active_email'),
     #
@@ -73,6 +91,9 @@ urlpatterns = [
 
     # 修改用户
     path('user/edit', EditUserView.as_view(), name='edit_user'),
+
+    # 删除用户
+    path('user/delete', AddUserView.as_view(), name='delete_user'),
 
     # 用户登录日志
     path('user/login/record', UserLoginRecordView.as_view(), name='login_record'),

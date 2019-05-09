@@ -203,6 +203,254 @@ class LogoutView(LoginStatusCheck, View):
         return HttpResponseRedirect(reverse('users:login'))
 
 ######################################
+# 单位列表
+######################################
+class UnitViews(LoginStatusCheck, View):
+    def get(self, request):
+        # 页面选择
+        web_chose_left_1 = 'users'
+        web_chose_left_2 = 'unit'
+        web_chose_middle = ''
+
+        title = '单位列表'
+
+        # 用户
+        users = UserProfile.objects.filter()
+
+        # 部门
+        depts=UserDepartment.objects.filter()
+
+        # 公司
+        units = UserCompany.objects.filter()
+
+        devices_nums = units.count()
+
+        # 判断页码
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+
+        # 对取到的数据进行分页，记得定义每页的数量
+        p = Paginator(units, 17, request=request)
+
+        # 分页处理后的 QuerySet
+        devices = p.page(page)
+
+        context = {
+            'web_chose_left_1': web_chose_left_1,
+            'web_chose_left_2': web_chose_left_2,
+            'web_chose_middle': web_chose_middle,
+            'title': title,
+            'devices': devices,
+            'depts':depts,
+            'devices_nums': devices_nums,
+            'users':users,
+            'units': units,
+        }
+        return render(request, 'users/units/unit_list.html', context=context)
+
+######################################
+# 添加单位
+######################################
+class AddUnitView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            add_unit_form = AddUnitForm(request.POST)
+            if add_unit_form.is_valid():
+                name = request.POST.get('name')
+
+                if UserCompany.objects.filter(name=name):
+                    return HttpResponse('{"status":"failed", "msg":"该单位名称已经被使用！"}', content_type='application/json')
+
+                # 获取信息
+                unit = UserCompany()
+                unit.name = name
+                unit.connect = request.POST.get('connect')
+                unit.connect_phone = request.POST.get('connect_phone')
+                unit.address = request.POST.get('address')
+                unit.create_user = request.user.chinese_name
+                unit.comment = request.POST.get('comment')
+                unit.save()
+
+                # 添加操作记录
+                op_record = UserOperationRecord()
+                op_record.op_user = request.user
+                op_record.belong = 2
+                op_record.status = 1
+                op_record.op_num = unit.id
+                op_record.operation = 1
+                op_record.action = "新增单位 [ %s ]" % unit.name
+                op_record.save()
+
+                return HttpResponse('{"status":"success", "msg":"单位添加成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"单位信息填写错误，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 修改单位
+######################################
+class EditUnitView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            edit_unit_form = EditUnitForm(request.POST)
+            if edit_unit_form.is_valid():
+
+                # 获取设备
+                unit = UserCompany.objects.get(id=request.POST.get('id'))
+                unit.name = request.POST.get('name')
+                unit.connect = request.POST.get('connect')
+                unit.connect_phone = request.POST.get('connect_phone')
+                unit.address = request.POST.get('address')
+                unit.comment = request.POST.get('comment')
+                unit.update_user = request.user.id
+                unit.update_time = datetime.datetime.now()
+
+                unit.save()
+
+                # 添加操作记录
+                op_record = UserOperationRecord()
+                op_record.op_user = request.user
+                op_record.belong = 2
+                op_record.status = 1
+                op_record.op_num = unit.id
+                op_record.operation = 2
+                op_record.action = "修改单位：%s" % (unit.name)
+                op_record.save()
+
+                return HttpResponse('{"status":"success", "msg":"单位信息修改成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"单位信息填写错误，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 删除单位
+######################################
+class DeleteUnitView(LoginStatusCheck, View):
+    def post(self, request):
+        try:
+            unit = UserCompany.objects.get(id=request.POST.get('id'))
+
+            # 添加操作记录
+            op_record = UserOperationRecord()
+            op_record.op_user = request.user
+            op_record.belong = 5
+            op_record.status = 1
+            op_record.op_num = unit.id
+            op_record.operation = 4
+            op_record.action = "删除单位：%s" % (unit.id)
+            op_record.save()
+            unit.delete()
+            return HttpResponse('{"status":"success", "msg":"单位删除成功！"}', content_type='application/json')
+        except Exception as e:
+            return HttpResponse('{"status":"falied", "msg":"单位删除失败！"}', content_type='application/json')
+
+
+######################################
+# 部门列表
+######################################
+class DeptListView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            add_dept_form = AddDeptForm(request.POST)
+            if add_dept_form.is_valid():
+                name = request.POST.get('name')
+
+                if UserDepartment.objects.filter(name=name):
+                    return HttpResponse('{"status":"failed", "msg":"该部门已存在！"}', content_type='application/json')
+
+                # 获取信息
+                dept = UserDepartment()
+                dept.name = name
+                dept.connect = request.POST.get('connect')
+                dept.connect_phone = request.POST.get('connect_phone')
+                dept.create_user = request.user.chinese_name
+                dept.comment = request.POST.get('comment')
+                dept.save()
+
+                # 添加操作记录
+                op_record = UserOperationRecord()
+                op_record.op_user = request.user
+                op_record.belong = 2
+                op_record.status = 1
+                op_record.op_num = dept.id
+                op_record.operation = 1
+                op_record.action = "新增部门 [ %s ]" % dept.name
+                op_record.save()
+
+                return HttpResponse('{"status":"success", "msg":"部门添加成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"部门信息填写错误，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 修改部门
+######################################
+class EditDeptView(LoginStatusCheck, View):
+    def post(self, request):
+        if request.user.role > 1:
+            edit_dept_form = EditDeptForm(request.POST)
+            if edit_dept_form.is_valid():
+
+                # 获取设备
+                dept = UserDepartment.objects.get(id=request.POST.get('id'))
+                dept.name = request.POST.get('name')
+                dept.connect = request.POST.get('connect')
+                dept.connect_phone = request.POST.get('connect_phone')
+                dept.comment = request.POST.get('comment')
+                dept.update_user = request.user.id
+                dept.update_time = datetime.datetime.now()
+
+                dept.save()
+
+                # 添加操作记录
+                op_record = UserOperationRecord()
+                op_record.op_user = request.user
+                op_record.belong = 2
+                op_record.status = 1
+                op_record.op_num = dept.id
+                op_record.operation = 2
+                op_record.action = "修改部门：%s" % (dept.name)
+                op_record.save()
+
+                return HttpResponse('{"status":"success", "msg":"部门信息修改成功！"}', content_type='application/json')
+            else:
+                return HttpResponse('{"status":"failed", "msg":"部门信息填写错误，请检查！"}', content_type='application/json')
+        else:
+            return HttpResponse(status=403)
+
+
+######################################
+# 删除部门
+######################################
+class DeleteDeptView(LoginStatusCheck, View):
+    def post(self, request):
+        try:
+            dept = UserDepartment.objects.get(id=request.POST.get('id'))
+
+            # 添加操作记录
+            op_record = UserOperationRecord()
+            op_record.op_user = request.user
+            op_record.belong = 5
+            op_record.status = 1
+            op_record.op_num = dept.id
+            op_record.operation = 4
+            op_record.action = "删除部门：%s" % (dept.id)
+            op_record.save()
+            dept.delete()
+            return HttpResponse('{"status":"success", "msg":"部门删除成功！"}', content_type='application/json')
+        except Exception as e:
+            return HttpResponse('{"status":"falied", "msg":"部门删除失败！"}', content_type='application/json')
+
+
+######################################
 # 忘记密码
 ######################################
 class ForgetPasswordView(View):

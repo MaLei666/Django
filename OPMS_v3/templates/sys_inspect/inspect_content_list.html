@@ -179,12 +179,12 @@
                                 <form class="form-horizontal m-t" id="signupForm">
 								<table class="table table-bordered t-m-b" style="width: 100%;margin-left: 0px;margin-right: 0px;">
 									<tr>
-										<td style="width:10%; text-align:center;">任务名称:</td>
+										<td class="td_text_center">任务名称:</td>
 										<td style="width:25%;">
 											<input id="taskName" name="taskName"  style="height: 30px;width: 98%;" type="text">
 										</td>
 
-										<td style="width:10%; text-align:center;">任务类型:</td>
+										<td class="td_text_center">任务类型:</td>
 										<td>
 											<select name="taskType" id="taskType" style="height: 30px;width: 98%;" onChange="typeSelect();">
 												<option value="">请选择...</option>
@@ -199,7 +199,7 @@
 										</td>
 
 
-										<td style="width:10%; text-align:center;">任务模式:</td>
+										<td class="td_text_center">任务模式:</td>
 										<td style="text-align: center;">
 											<input type="radio" name="status" value="0" checked>&nbsp;启用
 										</td>
@@ -207,7 +207,17 @@
 
 									<tr>
 
-										<td style="width:10%; text-align:center;">职能部门:</td>
+                                        <td class="td_text_center">单位名称:</td>
+										<td>
+                                        <select name="unitId" id="unitId" class="form-control" style="height: 30px;width: 98%;font-size: 12px">
+                                            <option value="">请选择...</option>
+                                            {% for each_company in company %}
+                                                <option value="{{ each_company.id }}">{{ each_company.name }}</option>
+                                            {% endfor %}
+                                        </select>
+										</td>
+
+										<td class="td_text_center">职能部门:</td>
 										<td>
 											<select name="deptId" id="deptId" class="form-control selectpicker" style="height: 30px;width: 98%;font-size: 12px">
                                             <option value="">请选择...</option>
@@ -217,17 +227,7 @@
 										    </select>
 										</td>
 
-										<td style="width:10%; text-align:center;">单位名称:</td>
-										<td>
-                                        <select name="unitId" id="unitId" class="form-control" style="height: 30px;width: 98%;font-size: 12px" >
-                                            <option value="">请选择...</option>
-                                            {% for each_company in company %}
-                                                <option value="{{ each_company.id }}">{{ each_company.name }}</option>
-                                            {% endfor %}
-                                        </select>
-										</td>
-
-										<td style="width:10%; text-align:center;">执行用户:</td>
+										<td class="td_text_center">执行用户:</td>
 										<td style="width:25%;">
 											<input id="userName" name="userName" type="hidden">
 											<select name="userId" id="userId" class="form-control" style="height: 30px;width: 98%;font-size: 12px">
@@ -297,6 +297,8 @@
 <script src="{% static 'plugins/layer/layer.min.js' %}"></script>
 <script src="{% static 'js/inspect/inspectContent/inspectContent.js' %}"></script>
 <script src="{% static 'js/inspect/inspectContent/add.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js'%}"></script>
+
 
 
 

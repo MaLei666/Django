@@ -25,7 +25,7 @@ class InspectDevInfo(models.Model):
     unit_id =models.BigIntegerField(blank=True,null=True,verbose_name='部门ID')
     unit_name=models.CharField(max_length=100,blank=True,null=True,verbose_name='单位名称')
     unit_address=models.CharField(max_length=255,blank=True,null=True,verbose_name='单位地址')
-    dev_id =models.CharField(max_length=255,verbose_name='设备ID')
+    dev_id =models.CharField(max_length=255,verbose_name='设备ID',unique=True)
     dev_name =models.CharField(max_length=255,verbose_name='设备名称')
     dev_type =models.CharField(max_length=255,blank=True,null=True,verbose_name='巡检设备类型')
     dev_status = models.IntegerField(verbose_name='设备状态',default=1)
